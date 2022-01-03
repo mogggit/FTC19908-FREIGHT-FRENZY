@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "BasicDrive")
 public class BasicDrive extends LinearOpMode {
@@ -15,6 +16,7 @@ public class BasicDrive extends LinearOpMode {
         DcMotor pivot = hardwareMap.dcMotor.get("pivot"); // pivot
         DcMotor slide = hardwareMap.dcMotor.get("slide"); // linear slide
         DcMotor spinner = hardwareMap.dcMotor.get("spinner"); // spinner
+        Servo grab = hardwareMap.servo.get("grab"); //grab
 
         waitForStart();
         if (opModeIsActive()) {
@@ -41,7 +43,15 @@ public class BasicDrive extends LinearOpMode {
                 m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 pivot.setPower(gamepad1.left_stick_y * 0.4);
                 spinner.setPower(gamepad1.right_trigger);
-
+                if (gamepad1.right_bumper) {
+                    grab.setPosition(0.75);
+                }
+                else if (gamepad1.left_bumper) {
+                    grab.setPosition(0.1);
+                }
+                else {
+                    grab.setPosition(0.5);
+                }
                 if (slide.getCurrentPosition() > 4700 && gamepad1.right_stick_y < 0) {
                     slide.setPower(0);
                 }
