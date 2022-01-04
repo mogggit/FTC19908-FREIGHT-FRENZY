@@ -29,7 +29,7 @@ public class BasicDrive extends LinearOpMode {
             m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+            pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
