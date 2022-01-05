@@ -17,26 +17,27 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.tensorflow.lite.task.vision.detector.Detection;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Red_Inside")
 public class Red_Inside extends LinearOpMode {
-  /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
-   * the following 4 detectable objects
-   *  0: Ball,
-   *  1: Cube,
-   *  2: Duck,
-   *  3: Marker (duck location tape marker)
-   *
-   *  Two additional model assets are available which only contain a subset of the objects:
-   *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
-   *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
-   */
+    /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
+     * the following 4 detectable objects
+     *  0: Ball,
+     *  1: Cube,
+     *  2: Duck,
+     *  3: Marker (duck location tape marker)
+     *
+     *  Two additional model assets are available which only contain a subset of the objects:
+     *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
+     *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
+     */
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {
-      "Ball",
-      "Cube",
-      "Duck",
-      "Marker"
+            "Ball",
+            "Cube",
+            "Duck",
+            "Marker"
     };
     private static final String VUFORIA_KEY =
             "AW7MS5P/////AAABmbhCSjNBJkfFs+kp+0SOiHFqZSTkYVDULdxP11ncxw4EQzSyRq4EOiB4GBhwHNTrpMnzpmW6xnjHx4W9Z+wQrT7fMevji9eaAX/Zn+LQwm3VrXcZLz1qmqswkdRrEgea+8tLIfLGqlnPLTHyvFcQwI21X2nM9DPIOPgFX1H+mrJetXYSe5DcM6B1kkLMSP/Y4j6dtX4FADWxblGiTrryqV0D5r7B1OMTPMydiqbta46QVSm8CrDhP88TGZ6bvnPtlPli8PTev/CWl7qihRyh8U3I6J4CifMfNOF/fMfSIsho91WhZi3T6OB0ulsHtTxQrrVPte5SIBm7Vtstx05z4KcUnSZ4rybico/ME9juFkMO";
@@ -78,7 +79,6 @@ public class Red_Inside extends LinearOpMode {
             tfod.activate();
             tfod.setZoom(1.25, 16.0/9.0);
         }
-
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -92,14 +92,14 @@ public class Red_Inside extends LinearOpMode {
                         int i = 0;
                         int position;
                         for (Recognition recognition : updatedRecognitions) {
-                            if (recognition.getLabel() == "Duck") {
+                            if (recognition.getLabel().equals("Duck")) {
                                 dashboardTelemetry.addData("Duck", "Duck");
                             }
                             dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                             dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                recognition.getLeft(), recognition.getTop());
+                                    recognition.getLeft(), recognition.getTop());
                             dashboardTelemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                recognition.getRight(), recognition.getBottom());
+                                    recognition.getRight(), recognition.getBottom());
                             if (recognition.getLeft() >= 455 && recognition.getRight() <= 756) {
                                 position = 1; // middle
                             }
@@ -119,7 +119,31 @@ public class Red_Inside extends LinearOpMode {
         }
     }
 
-    // 455 to 756
+    private void accelerateForward(double target1, double target2, double target3, double target4) {
+        /* note: actual speed is set to target / 100 (for example, target = 30 --> moving at 0.3 power) */
+        double cur_power1 = 0, cur_power2 = 0, cur_power3 = 0, cur_power4 = 0;
+        while (true) {
+            cur_power1 += 1; cur_power2 += 1; cur_power3 += 1; cur_power4 += 1;
+            if (((cur_power1 >= target1) && (cur_power2 >= target2))
+                && ((cur_power3 >= target3) && (cur_power4 >= target4))) {
+                break;
+            }
+            if (cur_power1 >= target1) { cur_power1 = target1; }
+            if (cur_power2 >= target2) { cur_power2 = target2; }
+            if (cur_power3 >= target3) { cur_power3 = target3; }
+            if (cur_power4 >= target4) { cur_power4 = target4; }
+            m1.setPower(cur_power1);
+            m2.setPower(cur_power2);
+            m3.setPower(-cur_power3);
+            m4.setPower(-cur_power4);
+            try {
+                TimeUnit.MILLISECONDS.sleep(750); /* pause for 0.75 seconds between loops */
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt(); /* process got interrupted somehow */
+            }
+        }
+    }
 
     private void initVuforia() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
@@ -130,7 +154,7 @@ public class Red_Inside extends LinearOpMode {
 
     private void initTfod() {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
         tfodParameters.isModelTensorFlow2 = true;
