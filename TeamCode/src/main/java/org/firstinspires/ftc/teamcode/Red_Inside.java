@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.tensorflow.lite.task.vision.detector.Detection;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Red_Inside")
 public class Red_Inside extends LinearOpMode {
@@ -92,9 +93,6 @@ public class Red_Inside extends LinearOpMode {
                         int i = 0;
                         int position;
                         for (Recognition recognition : updatedRecognitions) {
-                            if (recognition.getLabel() == "Duck") {
-                                dashboardTelemetry.addData("Duck", "Duck");
-                            }
                             dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                             dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
@@ -119,7 +117,31 @@ public class Red_Inside extends LinearOpMode {
         }
     }
 
-    // 455 to 756
+    private void accelerateForward(double target1, double target2, double target3, double target4) {
+        /* note: actual speed is set to target / 100 (for example, target = 30 --> moving at 0.3 power) */
+        double cur_power1 = 0, cur_power2 = 0, cur_power3 = 0, cur_power4 = 0;
+        while (true) {
+            cur_power1 += 1; cur_power2 += 1; cur_power3 += 1; cur_power4 += 1;
+            if (((cur_power1 >= target1) && (cur_power2 >= target2))
+                    && ((cur_power3 >= target3) && (cur_power4 >= target4))) {
+                break;
+            }
+            if (cur_power1 >= target1) { cur_power1 = target1; }
+            if (cur_power2 >= target2) { cur_power2 = target2; }
+            if (cur_power3 >= target3) { cur_power3 = target3; }
+            if (cur_power4 >= target4) { cur_power4 = target4; }
+            m1.setPower(cur_power1);
+            m2.setPower(cur_power2);
+            m3.setPower(-cur_power3);
+            m4.setPower(-cur_power4);
+            try {
+                TimeUnit.MILLISECONDS.sleep(750); /* pause for 0.75 seconds between loops */
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt(); /* process got interrupted somehow */
+            }
+        }
+    }
 
     private void initVuforia() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
