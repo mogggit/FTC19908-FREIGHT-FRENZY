@@ -63,6 +63,7 @@ public class BasicDrive extends LinearOpMode {
                 m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 pivot.setPower(gamepad1.left_stick_y * 0.4);
                 spinner.setPower(gamepad1.right_trigger);
+
                 if (gamepad1.right_bumper) {
                     grab.setPosition(0.75);
                 }
@@ -72,6 +73,7 @@ public class BasicDrive extends LinearOpMode {
                 else {
                     grab.setPosition(0.5);
                 }
+
                 if (slide.getCurrentPosition() > 4700 && gamepad1.right_stick_y < 0) {
                     slide.setPower(0);
                 }
@@ -82,14 +84,12 @@ public class BasicDrive extends LinearOpMode {
                     slide.setPower(-gamepad1.right_stick_y);
                 }
 
-                telemetry.addData("Slides Encoder: ", slide.getCurrentPosition());
-                telemetry.update();
-
+                //dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
                 dashboardTelemetry.addData("M1 Power", m1.getPower());
                 dashboardTelemetry.addData("M2 Power", m2.getPower());
                 dashboardTelemetry.addData("M3 Power", m3.getPower());
                 dashboardTelemetry.addData("M4 Power", m4.getPower());
-                dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
+                //dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
                 dashboardTelemetry.update();
 
             }
