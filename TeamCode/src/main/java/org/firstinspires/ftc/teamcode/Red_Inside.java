@@ -78,8 +78,7 @@ public class Red_Inside extends LinearOpMode {
             tfod.activate();
             tfod.setZoom(1.25, 16.0/9.0);
         }
-        double cur_power = 0;
-        double target_power = 30;
+
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
