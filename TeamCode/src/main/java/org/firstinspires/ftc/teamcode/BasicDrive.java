@@ -32,7 +32,7 @@ public class BasicDrive extends LinearOpMode {
         pivot = hardwareMap.dcMotor.get("pivot"); // pivot
         slide = hardwareMap.dcMotor.get("slide"); // linear slide
         spinner = hardwareMap.dcMotor.get("spinner"); // spinner
-        grab = hardwareMap.servo.get("grab"); //grab
+        grab = hardwareMap.servo.get("grab"); // grab
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
