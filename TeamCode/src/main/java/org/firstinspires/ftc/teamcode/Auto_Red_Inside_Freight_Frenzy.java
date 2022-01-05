@@ -56,7 +56,6 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     private DcMotor spinner;
     private Servo grab;
 
-
     @Override
     public void runOpMode() {
         initVuforia();
