@@ -46,10 +46,15 @@ public class Red_Inside extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
+
     private DcMotor m1;
     private DcMotor m2;
     private DcMotor m3;
     private DcMotor m4;
+    private DcMotor pivot;
+    private DcMotor slide;
+    private DcMotor spinner;
+    private Servo grab;
 
 
     @Override
@@ -57,10 +62,14 @@ public class Red_Inside extends LinearOpMode {
         initVuforia();
         initTfod();
 
-        m1 = hardwareMap.dcMotor.get("M1");
-        m2 = hardwareMap.dcMotor.get("M2");
-        m3 = hardwareMap.dcMotor.get("M3");
-        m4 = hardwareMap.dcMotor.get("M4");
+        m1 = hardwareMap.dcMotor.get("M1"); // top left wheel
+        m2 = hardwareMap.dcMotor.get("M2"); // bottom left wheel
+        m3 = hardwareMap.dcMotor.get("M3"); // top right wheel
+        m4 = hardwareMap.dcMotor.get("M4"); // bottom right wheel
+        pivot = hardwareMap.dcMotor.get("pivot"); // pivot
+        slide = hardwareMap.dcMotor.get("slide"); // linear slide
+        spinner = hardwareMap.dcMotor.get("spinner"); // spinner
+        grab = hardwareMap.servo.get("grab"); // grab
 
         m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -70,6 +79,14 @@ public class Red_Inside extends LinearOpMode {
         m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();

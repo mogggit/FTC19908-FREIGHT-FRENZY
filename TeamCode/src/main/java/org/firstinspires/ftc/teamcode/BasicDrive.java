@@ -34,33 +34,35 @@ public class BasicDrive extends LinearOpMode {
         spinner = hardwareMap.dcMotor.get("spinner"); // spinner
         grab = hardwareMap.servo.get("grab"); // grab
 
+        m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
 
         waitForStart();
         if (opModeIsActive()) {
-            m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            m2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
             while (opModeIsActive()) {
+                /* Mecanum Wheels */
                 m1.setPower(-gamepad2.left_stick_x + gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 m2.setPower(gamepad2.left_stick_x + gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 m3.setPower(-gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
+
                 pivot.setPower(gamepad1.left_stick_y * 0.4);
                 spinner.setPower(gamepad1.right_trigger);
 
@@ -84,14 +86,9 @@ public class BasicDrive extends LinearOpMode {
                     slide.setPower(-gamepad1.right_stick_y);
                 }
 
-                //dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
-                dashboardTelemetry.addData("M1 Power", m1.getPower());
-                dashboardTelemetry.addData("M2 Power", m2.getPower());
-                dashboardTelemetry.addData("M3 Power", m3.getPower());
-                dashboardTelemetry.addData("M4 Power", m4.getPower());
-                //dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
+                dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
+                dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
                 dashboardTelemetry.update();
-
             }
         }
     }
