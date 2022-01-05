@@ -1,22 +1,41 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp(name = "BasicDrive")
 public class BasicDrive extends LinearOpMode {
+
+    private DcMotor m1;
+    private DcMotor m2;
+    private DcMotor m3;
+    private DcMotor m4;
+    private DcMotor pivot;
+    private DcMotor slide;
+    private DcMotor spinner;
+    private Servo grab;
+
+    private FtcDashboard dashboard;
+    private Telemetry dashboardTelemetry;
+
     @Override
     public void runOpMode() {
-        DcMotor m1 = hardwareMap.dcMotor.get("M1"); // top left wheel
-        DcMotor m2 = hardwareMap.dcMotor.get("M2"); // bottom left wheel
-        DcMotor m3 = hardwareMap.dcMotor.get("M3"); // top right wheel
-        DcMotor m4 = hardwareMap.dcMotor.get("M4"); // bottom right wheel
-        DcMotor pivot = hardwareMap.dcMotor.get("pivot"); // pivot
-        DcMotor slide = hardwareMap.dcMotor.get("slide"); // linear slide
-        DcMotor spinner = hardwareMap.dcMotor.get("spinner"); // spinner
-        Servo grab = hardwareMap.servo.get("grab"); //grab
+        m1 = hardwareMap.dcMotor.get("M1"); // top left wheel
+        m2 = hardwareMap.dcMotor.get("M2"); // bottom left wheel
+        m3 = hardwareMap.dcMotor.get("M3"); // top right wheel
+        m4 = hardwareMap.dcMotor.get("M4"); // bottom right wheel
+        pivot = hardwareMap.dcMotor.get("pivot"); // pivot
+        slide = hardwareMap.dcMotor.get("slide"); // linear slide
+        spinner = hardwareMap.dcMotor.get("spinner"); // spinner
+        grab = hardwareMap.servo.get("grab"); //grab
+
+        dashboard = FtcDashboard.getInstance();
+        dashboardTelemetry = dashboard.getTelemetry();
 
         waitForStart();
         if (opModeIsActive()) {
@@ -28,10 +47,11 @@ public class BasicDrive extends LinearOpMode {
             m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -64,6 +84,14 @@ public class BasicDrive extends LinearOpMode {
 
                 telemetry.addData("Slides Encoder: ", slide.getCurrentPosition());
                 telemetry.update();
+
+                dashboardTelemetry.addData("M1 Power", m1.getPower());
+                dashboardTelemetry.addData("M2 Power", m2.getPower());
+                dashboardTelemetry.addData("M3 Power", m3.getPower());
+                dashboardTelemetry.addData("M4 Power", m4.getPower());
+                dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
+                dashboardTelemetry.update();
+
             }
         }
     }
