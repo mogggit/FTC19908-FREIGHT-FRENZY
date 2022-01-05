@@ -19,7 +19,7 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import java.util.List;
 
 @Autonomous(name = "Red_Inside")
-public class TensorFlowObjectDetection extends LinearOpMode {
+public class Red_Inside extends LinearOpMode {
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
    *  0: Ball,
@@ -78,10 +78,10 @@ public class TensorFlowObjectDetection extends LinearOpMode {
             tfod.activate();
             tfod.setZoom(1.25, 16.0/9.0);
         }
-
+        double cur_power = 0;
+        double target_power = 30;
         waitForStart();
         if (opModeIsActive()) {
-
             while (opModeIsActive()) {
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
