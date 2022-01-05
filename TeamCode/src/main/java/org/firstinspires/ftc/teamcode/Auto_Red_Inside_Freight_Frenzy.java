@@ -19,8 +19,8 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "Red_Inside")
-public class Red_Inside extends LinearOpMode {
+@Autonomous(name = "Auto Red Inside Freight Frenzy")
+public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
    *  0: Ball,
@@ -62,6 +62,7 @@ public class Red_Inside extends LinearOpMode {
         initVuforia();
         initTfod();
 
+        //TODO: Test if hardware.Map works
         m1 = hardwareMap.dcMotor.get("M1"); // top left wheel
         m2 = hardwareMap.dcMotor.get("M2"); // bottom left wheel
         m3 = hardwareMap.dcMotor.get("M3"); // top right wheel
@@ -130,6 +131,10 @@ public class Red_Inside extends LinearOpMode {
                         dashboardTelemetry.update();
                     }
                 }
+
+                //TODO: Grab the duck
+
+                sleep(1000000000);
             }
         }
     }

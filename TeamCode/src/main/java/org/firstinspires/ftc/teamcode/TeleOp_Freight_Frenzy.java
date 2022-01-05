@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "BasicDrive")
-public class BasicDrive extends LinearOpMode {
+@TeleOp(name = "TeleOp Freight Frenzy")
+public class TeleOp_Freight_Frenzy extends LinearOpMode {
 
     private DcMotor m1;
     private DcMotor m2;
