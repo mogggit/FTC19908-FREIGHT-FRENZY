@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "Motor Encoder Test")
-public class Motor_Encoder_test extends LinearOpMode {
+public class Motor_Encoder_Test extends LinearOpMode {
 
     private DcMotor m1;
     private DcMotor m2;
