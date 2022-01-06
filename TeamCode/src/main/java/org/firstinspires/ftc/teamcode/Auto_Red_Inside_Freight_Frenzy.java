@@ -21,24 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Auto Red Inside Freight Frenzy")
 public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
-  /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
-   * the following 4 detectable objects
-   *  0: Ball,
-   *  1: Cube,
-   *  2: Duck,
-   *  3: Marker (duck location tape marker)
-   *
-   *  Two additional model assets are available which only contain a subset of the objects:
-   *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
-   *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
-   */
+
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
-    private static final String[] LABELS = {
-      "Ball",
-      "Cube",
-      "Duck",
-      "Marker"
-    };
+    private static final String[] LABELS = {"Ball", "Cube", "Duck", "Marker"};
     private static final String VUFORIA_KEY =
             "AW7MS5P/////AAABmbhCSjNBJkfFs+kp+0SOiHFqZSTkYVDULdxP11ncxw4EQzSyRq4EOiB4GBhwHNTrpMnzpmW6xnjHx4W9Z+wQrT7fMevji9eaAX/Zn+LQwm3VrXcZLz1qmqswkdRrEgea+8tLIfLGqlnPLTHyvFcQwI21X2nM9DPIOPgFX1H+mrJetXYSe5DcM6B1kkLMSP/Y4j6dtX4FADWxblGiTrryqV0D5r7B1OMTPMydiqbta46QVSm8CrDhP88TGZ6bvnPtlPli8PTev/CWl7qihRyh8U3I6J4CifMfNOF/fMfSIsho91WhZi3T6OB0ulsHtTxQrrVPte5SIBm7Vtstx05z4KcUnSZ4rybico/ME9juFkMO";
     private VuforiaLocalizer vuforia;
@@ -84,17 +69,14 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         }
 
         waitForStart();
+
         if (opModeIsActive()) {
             int position = -1;
             if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
                 List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                 if (updatedRecognitions != null) {
                     dashboardTelemetry.addData("# Object Detected", updatedRecognitions.size());
-                    // step through the list of recognitions and display boundary info.
                     int i = 0;
-
                     for (Recognition recognition : updatedRecognitions) {
                         dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -117,42 +99,30 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                 }
             }
 
-            int state = 0;
-            while (opModeIsActive()) {
-                dashboardTelemetry.addData("state", state);
-                dashboardTelemetry.addData("slide encoder", slide.getCurrentPosition());
-                dashboardTelemetry.update();
-
-                switch (position) {
-                    case 0:
-                        // TODO: CASE 1
-                        break;
-                    case 1:
-                        if (state == 0) {
-                            runMotorDistance(0.2, -650, -500, 500, 650);
-                            slideExtend(-1, -4000);
-                            state += 1;
-                        }
-                        else if (state == 1) {
-                            pivotStay(0.3, -140);
-                            if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy() && !slide.isBusy()) {
-                                stopMotor();
-                                stopSlide();
-                                state += 1;
-                            }
-                        }
-                        break;
-                    case 2:
-                        // TODO: CASE 2
-                        break;
-                    default:
-                        break;
-                }
-
-                dashboardTelemetry.addData("Auto", "Ended");
-                dashboardTelemetry.update();
-                sleep(1000000000);
+            switch (position) {
+                case 0:
+                    // TODO: CASE 1
+                    break;
+                case 1:
+                    //Go to duck
+                    runMotorDistance(0.2, -650, -500, 500, 650);
+                    slideExtend(-1, -4000);
+                    while (m1.isBusy() && m2.isBusy() && m3.isBusy() && m4.isBusy() && slide.isBusy()) {
+                        pivotStay(0.3, -140);
+                    }
+                    stopMotor();
+                    stopSlide();
+                    break;
+                case 2:
+                    // TODO: CASE 2
+                    break;
+                default:
+                    break;
             }
+
+            dashboardTelemetry.addData("Auto", "Ended");
+            dashboardTelemetry.update();
+            sleep(1000000000);
         }
     }
 
