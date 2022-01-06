@@ -61,7 +61,6 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         initVuforia();
         initTfod();
 
-        //TODO: Test if hardware.Map works
         m1 = hardwareMap.dcMotor.get("M1"); // top left wheel
         m2 = hardwareMap.dcMotor.get("M2"); // bottom left wheel
         m3 = hardwareMap.dcMotor.get("M3"); // top right wheel
@@ -72,21 +71,13 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         grab = hardwareMap.servo.get("grab"); // grab
 
         m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        pivot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
@@ -100,6 +91,9 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
+
+                pivotRotate(0.4, -50);
+
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
@@ -131,8 +125,10 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                     }
                 }
 
-                //TODO: Grab the duck
+                runMotorDistance(0.5, 1000, 1000, 1000, 1000);
 
+                dashboardTelemetry.addData("Auto", "Ended");
+                dashboardTelemetry.update();
                 sleep(1000000000);
             }
         }
@@ -181,4 +177,54 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
+
+    public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
+
+        m1.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        m2.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        m3.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        m4.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        m1.setTargetPosition(p1);
+        m2.setTargetPosition(p2);
+        m3.setTargetPosition(p3);
+        m4.setTargetPosition(p4);
+
+        m1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        m2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        m3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        m4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        m1.setPower(power);
+        m2.setPower(power);
+        m3.setPower(power);
+        m4.setPower(power);
+
+        while (m1.isBusy() || m2.isBusy() || m3.isBusy() || m4.isBusy()) {}
+
+        m1.setPower(0);
+        m2.setPower(0);
+        m3.setPower(0);
+        m4.setPower(0);
+
+        m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void pivotRotate(double power, int p1){
+
+        pivot.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        pivot.setTargetPosition(p1);
+        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        pivot.setPower(power);
+
+        while (pivot.isBusy()){}
+
+        pivot.setPower(0);
+        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
 }
