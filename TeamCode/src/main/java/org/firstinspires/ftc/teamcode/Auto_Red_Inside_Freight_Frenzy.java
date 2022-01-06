@@ -70,11 +70,6 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         spinner = hardwareMap.dcMotor.get("spinner"); // spinner
         grab = hardwareMap.servo.get("grab"); // grab
 
-        m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -91,9 +86,8 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         waitForStart();
         if (opModeIsActive()) {
             while (opModeIsActive()) {
-
                 pivotRotate(0.4, -50);
-
+                int position = -1;
                 if (tfod != null) {
                     // getUpdatedRecognitions() will return null if no new information is available since
                     // the last time that call was made.
@@ -102,7 +96,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                         dashboardTelemetry.addData("# Object Detected", updatedRecognitions.size());
                         // step through the list of recognitions and display boundary info.
                         int i = 0;
-                        int position;
+
                         for (Recognition recognition : updatedRecognitions) {
                             dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                             dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
@@ -125,7 +119,18 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                     }
                 }
 
-                runMotorDistance(0.5, 1000, 1000, 1000, 1000);
+                switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        break;
+                }
+
+                runMotorDistance(0.2, -500, -500, 500, 500);
 
                 dashboardTelemetry.addData("Auto", "Ended");
                 dashboardTelemetry.update();
@@ -179,6 +184,9 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     }
 
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
+
+        telemetry.addData("m2", m2.getCurrentPosition());
+        telemetry.update();
 
         m1.setMode(DcMotor.RunMode.RESET_ENCODERS);
         m2.setMode(DcMotor.RunMode.RESET_ENCODERS);

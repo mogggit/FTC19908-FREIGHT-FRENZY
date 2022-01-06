@@ -64,7 +64,10 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 m3.setPower(-gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
 
-                pivot.setPower(gamepad1.left_stick_y * 0.4);
+
+                //-145
+                //1300
+                //pivot.setPower(gamepad1.left_stick_y * 0.4);
                 dashboardTelemetry.addData("Gamepad1.left_stick_y", gamepad1.left_stick_y);
                 dashboardTelemetry.addData("Gamepad1.right_stick_y", gamepad1.right_stick_y);
                 spinner.setPower(gamepad1.right_trigger);
@@ -77,30 +80,26 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 }
                 else {
                     grab.setPosition(0.5);
-
                 }
 
-                if (gamepad1.y) {
-                    pivotRotate(0.4, 0);
-                }
-                else if (gamepad1.a) {
-                    pivotRotate(0.4, -70);
-                }
-                else if (gamepad1.b) {
-                    pivotRotate(0.4, -50);
-                }
-                else if (gamepad1.x) {
-                    pivotRotate(0.4, 100);
-                }
-
-                if (slide.getCurrentPosition() > 4700 && gamepad1.right_stick_y < 0) {
+                if (slide.getCurrentPosition() < -4200 && gamepad1.right_stick_y < 0) {
                     slide.setPower(0);
                 }
-                else if (slide.getCurrentPosition() < 0 && gamepad1.right_stick_y > 0) {
+                else if (slide.getCurrentPosition() > 0 && gamepad1.right_stick_y > 0) {
                     slide.setPower(0);
                 }
                 else {
-                    slide.setPower(-gamepad1.right_stick_y);
+                    slide.setPower(gamepad1.right_stick_y);
+                }
+
+                if (gamepad1.a) {
+                    pivotStay(0.4, 0);
+                }
+                else if (gamepad1.b) {
+                    pivotStay(0.4, -145);
+                }
+                else if (gamepad1.x) {
+                    pivotStay(0.4, 1300);
                 }
 
                 dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
@@ -110,14 +109,8 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
         }
     }
 
-    public void pivotRotate(double power, int p1){
-        pivot.setTargetPosition(p1);
-        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        pivot.setPower(power);
-
-        while (pivot.isBusy()){}
-
-        pivot.setPower(0);
-        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    public void pivotStay(double power, int p1){
+        int targetDiff = p1 - pivot.getCurrentPosition();
+        pivot.setPower(power * targetDiff / 100.0);
     }
 }
