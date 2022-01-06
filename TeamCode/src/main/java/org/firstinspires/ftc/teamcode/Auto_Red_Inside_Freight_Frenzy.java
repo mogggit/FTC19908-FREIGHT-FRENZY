@@ -85,52 +85,69 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                pivotRotate(0.4, -50);
-                int position = -1;
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        dashboardTelemetry.addData("# Object Detected", updatedRecognitions.size());
-                        // step through the list of recognitions and display boundary info.
-                        int i = 0;
+            int position = -1;
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                if (updatedRecognitions != null) {
+                    dashboardTelemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
 
-                        for (Recognition recognition : updatedRecognitions) {
-                            dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                    for (Recognition recognition : updatedRecognitions) {
+                        dashboardTelemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        dashboardTelemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
-                            dashboardTelemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                        dashboardTelemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
-                            if (recognition.getLeft() >= 455 && recognition.getRight() <= 756) {
-                                position = 1; // middle
-                            }
-                            else if (recognition.getLeft() < 455) {
-                                position = 0; // left
-                            }
-                            else {
-                                position = 2; // right
-                            }
-                            dashboardTelemetry.addData(String.format("position (%d)", i), position);
-                            i++;
+                        if (recognition.getLeft() >= 455 && recognition.getRight() <= 756) {
+                            position = 1; // middle
                         }
-                        dashboardTelemetry.update();
+                        else if (recognition.getLeft() < 455) {
+                            position = 0; // left
+                        }
+                        else {
+                            position = 2; // right
+                        }
+                        dashboardTelemetry.addData(String.format("position (%d)", i), position);
+                        i++;
                     }
+                    dashboardTelemetry.update();
                 }
+            }
+
+            int state = 0;
+            while (opModeIsActive()) {
+                dashboardTelemetry.addData("state", state);
+                dashboardTelemetry.addData("slide encoder", slide.getCurrentPosition());
+                dashboardTelemetry.update();
 
                 switch (position) {
                     case 0:
+                        // TODO: CASE 1
                         break;
                     case 1:
+                        if (state == 0) {
+                            runMotorDistance(0.2, -650, -500, 500, 650);
+                            slideExtend(-1, -4000);
+                            state += 1;
+                        }
+                        else if (state == 1) {
+                            pivotStay(0.3, -140);
+                            if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy() && !slide.isBusy()) {
+                                stopMotor();
+                                stopSlide();
+                                state += 1;
+                            }
+                        }
                         break;
                     case 2:
+                        // TODO: CASE 2
                         break;
                     default:
                         break;
                 }
-
-                runMotorDistance(0.2, -500, -500, 500, 500);
 
                 dashboardTelemetry.addData("Auto", "Ended");
                 dashboardTelemetry.update();
@@ -159,9 +176,6 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
 
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
 
-        telemetry.addData("m2", m2.getCurrentPosition());
-        telemetry.update();
-
         m1.setMode(DcMotor.RunMode.RESET_ENCODERS);
         m2.setMode(DcMotor.RunMode.RESET_ENCODERS);
         m3.setMode(DcMotor.RunMode.RESET_ENCODERS);
@@ -181,31 +195,34 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         m2.setPower(power);
         m3.setPower(power);
         m4.setPower(power);
+    }
 
-        while (m1.isBusy() || m2.isBusy() || m3.isBusy() || m4.isBusy()) {}
-
+    public void stopMotor() {
         m1.setPower(0);
         m2.setPower(0);
         m3.setPower(0);
         m4.setPower(0);
-
         m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
     }
 
-    public void pivotRotate(double power, int p1){
-        pivot.setMode(DcMotor.RunMode.RESET_ENCODERS);
-        pivot.setTargetPosition(p1);
-        pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        pivot.setPower(power);
+    public void slideExtend(double power, int p1) {
+        slide.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        slide.setTargetPosition(p1);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(power);
+    }
 
-        while (pivot.isBusy()){}
-
+    public void stopSlide() {
         pivot.setPower(0);
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void pivotStay(double power, int p1){
+        int targetDiff = p1 - pivot.getCurrentPosition();
+        pivot.setPower(power * targetDiff / 100.0);
     }
 
     private void accelerateForward(double target1, double target2, double target3, double target4) {
