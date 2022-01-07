@@ -99,19 +99,42 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                 }
             }
 
+            double startTime = getRuntime();
             switch (position) {
                 case 0:
                     // TODO: CASE 1
                     break;
                 case 1:
+                    grab.setPosition(0.5);
+
                     //Go to duck
-                    runMotorDistance(0.2, -650, -500, 500, 650);
-                    slideExtend(-1, -4000);
+                    runMotorDistance(0.2, -590, -500, 500, 590);
+                    slideExtend(-1, -4200);
                     while (m1.isBusy() && m2.isBusy() && m3.isBusy() && m4.isBusy() && slide.isBusy()) {
-                        pivotStay(0.3, -140);
+                        dashboardTelemetry.addData("M1", m1.getCurrentPosition());
+                        dashboardTelemetry.addData("M2", m2.getCurrentPosition());
+                        dashboardTelemetry.addData("M3", m3.getCurrentPosition());
+                        dashboardTelemetry.addData("M4", m4.getCurrentPosition());
+                        dashboardTelemetry.update();
+                        pivotStay(0.3, -10);
                     }
                     stopMotor();
                     stopSlide();
+
+                    //Grab duck
+                    startTime = getRuntime();
+                    while (getRuntime() < startTime + 1.5) {
+                        dashboardTelemetry.addData("Pivot", pivot.getCurrentPosition());
+                        dashboardTelemetry.update();
+                        pivotStay(0.3, -80);
+                    }
+                    grab.setPosition(0.78);
+                    sleep(1000);
+
+                    //Turn to hub
+
+                    //Release duck
+
                     break;
                 case 2:
                     // TODO: CASE 2
@@ -120,9 +143,11 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
                     break;
             }
 
-            dashboardTelemetry.addData("Auto", "Ended");
-            dashboardTelemetry.update();
-            sleep(1000000000);
+            while (true) {
+                pivotStay(0.3, 0);
+                dashboardTelemetry.addData("Auto", "Ended");
+                dashboardTelemetry.update();
+            }
         }
     }
 
@@ -191,8 +216,14 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     }
 
     public void pivotStay(double power, int p1){
-        int targetDiff = p1 - pivot.getCurrentPosition();
-        pivot.setPower(power * targetDiff / 100.0);
+        double pivotPower = power * ((p1 - pivot.getCurrentPosition()) / 100.0);
+        if (pivotPower > 0.5) {
+            pivotPower = 0.5;
+        }
+        else if (pivotPower < -0.5) {
+            pivotPower = -0.5;
+        }
+        pivot.setPower(pivotPower);
     }
 
     private void accelerateForward(double target1, double target2, double target3, double target4) {
