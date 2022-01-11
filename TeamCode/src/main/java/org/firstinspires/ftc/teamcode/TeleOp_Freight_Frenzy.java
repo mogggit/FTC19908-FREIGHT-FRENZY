@@ -55,8 +55,15 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
 
+        int grabValue = -140;
+        int balanceValue = 0;
+        int topValue = 1000;
+        int highValue = 1200;
+        double pivotCorrection = 0;
+
         waitForStart();
         if (opModeIsActive()) {
+            double startTime = getRuntime();
             while (opModeIsActive()) {
                 /* Mecanum Wheels */
                 m1.setPower(-gamepad2.left_stick_x + gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
@@ -64,10 +71,8 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 m3.setPower(-gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
                 m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
 
-
                 //-145
                 //1300
-                //pivot.setPower(gamepad1.left_stick_y * 0.4);
                 dashboardTelemetry.addData("Gamepad1.left_stick_y", gamepad1.left_stick_y);
                 dashboardTelemetry.addData("Gamepad1.right_stick_y", gamepad1.right_stick_y);
                 spinner.setPower(gamepad1.right_trigger);
@@ -93,18 +98,37 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 }
 
                 if (gamepad1.b) {
-                    pivotStay(0.3, -140);
+                    pivotStay(0.3, grabValue);
                 }
                 else if (gamepad1.x) {
-                    pivotStay(0.3, 1200);
+                    pivotStay(0.3, highValue);
                 }
                 else if (gamepad1.y) {
-                    pivotStay(0.3, 1000);
+                    pivotStay(0.3, topValue);
                 }
                 else {
-                    pivotStay(0.3, 0);
+                    pivotStay(0.3, balanceValue);
                 }
 
+                if (gamepad1.right_stick_y != 0) {
+                    pivotCorrection = -gamepad1.right_stick_y;
+
+                    grabValue += pivotCorrection;
+                    highValue += pivotCorrection;
+                    topValue += pivotCorrection;
+                    balanceValue += pivotCorrection;
+                }
+
+                if (gamepad2.right_stick_y != 0) {
+                    pivotCorrection = -gamepad1.right_stick_y;
+
+                    grabValue += pivotCorrection;
+                    highValue += pivotCorrection;
+                    topValue += pivotCorrection;
+                    balanceValue += pivotCorrection;
+                }
+
+                dashboardTelemetry.addData("Pivot Correction", pivotCorrection);
                 dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
                 dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
                 dashboardTelemetry.update();
@@ -114,11 +138,11 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
 
     public void pivotStay(double power, int p1){
         double pivotPower = power * ((p1 - pivot.getCurrentPosition()) / 100.0);
-        if (pivotPower > 0.5) {
-            pivotPower = 0.5;
+        if (pivotPower > 0.3) {
+            pivotPower = 0.3;
         }
-        else if (pivotPower < -0.5) {
-            pivotPower = -0.5;
+        else if (pivotPower < -0.3) {
+            pivotPower = -0.3;
         }
         pivot.setPower(pivotPower);
     }
