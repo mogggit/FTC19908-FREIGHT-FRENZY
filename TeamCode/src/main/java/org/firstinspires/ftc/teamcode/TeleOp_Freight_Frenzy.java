@@ -78,13 +78,13 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 spinner.setPower(gamepad1.right_trigger);
 
                 if (gamepad1.right_bumper) {
-                    grab.setPosition(0.75);
+                    grab.setPosition(1);
                 }
                 else if (gamepad1.left_bumper) {
                     grab.setPosition(0.1);
                 }
                 else {
-                    grab.setPosition(0.5);
+                    grab.setPosition(0.42);
                 }
 
                 if (slide.getCurrentPosition() < -4200 && gamepad1.left_stick_y < 0) {
