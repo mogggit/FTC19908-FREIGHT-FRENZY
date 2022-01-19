@@ -4,7 +4,9 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -19,6 +21,7 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
     private DcMotor slide;
     private DcMotor spinner;
     private Servo grab;
+    private TouchSensor touch;
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
@@ -33,6 +36,7 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
         slide = hardwareMap.dcMotor.get("slide"); // linear slide
         spinner = hardwareMap.dcMotor.get("spinner"); // spinner
         grab = hardwareMap.servo.get("grab"); // grab
+        touch = hardwareMap.touchSensor.get("touch");
 
         m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -90,7 +94,7 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                 if (slide.getCurrentPosition() < -4200 && gamepad1.left_stick_y < 0) {
                     slide.setPower(0);
                 }
-                else if (slide.getCurrentPosition() > 0 && gamepad1.left_stick_y > 0) {
+                else if (gamepad1.left_stick_y > 0 && touch.isPressed()) {
                     slide.setPower(0);
                 }
                 else {
@@ -128,9 +132,14 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                     balanceValue += pivotCorrection;
                 }
 
+                if (touch.isPressed()) {
+                    dashboardTelemetry.addData("Touch", "Pressed");
+                }
+
                 dashboardTelemetry.addData("Pivot Correction", pivotCorrection);
                 dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
                 dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
+                dashboardTelemetry.addData("Touch Sensor", touch.getValue());
                 dashboardTelemetry.update();
             }
         }
