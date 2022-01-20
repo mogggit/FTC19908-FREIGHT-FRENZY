@@ -53,6 +53,11 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
         slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
@@ -136,6 +141,10 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
                     dashboardTelemetry.addData("Touch", "Pressed");
                 }
 
+                dashboardTelemetry.addData("M1 Encoder", m1.getCurrentPosition());
+                dashboardTelemetry.addData("M2 Encoder", m2.getCurrentPosition());
+                dashboardTelemetry.addData("M3 Encoder", m3.getCurrentPosition());
+                dashboardTelemetry.addData("M4 Encoder", m4.getCurrentPosition());
                 dashboardTelemetry.addData("Pivot Correction", pivotCorrection);
                 dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
                 dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());

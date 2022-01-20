@@ -2,25 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.tensorflow.lite.task.vision.detector.Detection;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-@Autonomous(name = "Auto Red Inside Freight Frenzy")
-public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
+@Autonomous(name = "Auto Red Outside Freight Frenzy")
+public class Auto_Red_Outside_Freight_Frenzy extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
@@ -59,7 +48,9 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
+
             mainFSM();
+
             if (state == -1) {
                 break;
             }
@@ -69,27 +60,17 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     public void mainFSM() {
         switch (state) {
             case 0:
-                runMotorDistance(0.5, -870,-2166,188,-1125);
-                state += 1;
+                runMotorDistance(0.5, -1010,-1490,1500,970);
+                state = 1;
                 break;
             case 1:
-                if (stopMotor()) {
-                    state += 1;
-                    break;
-                }
-            case 2:
-                runMotorDistance(1, -1850,-1850,1850,1850);
-                state += 1;
-                break;
-            case 3:
-                if (stopMotor()) {
+                if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
+                    stopMotor();
                     state = -1;
                     break;
                 }
         }
         pivotStay(0.3, 0);
-        dashboardTelemetry.addData("State", state);
-        dashboardTelemetry.update();
     }
 
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
@@ -115,21 +96,27 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         m4.setPower(power);
     }
 
-    public boolean stopMotor() {
-        if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
-            m1.setPower(0);
-            m2.setPower(0);
-            m3.setPower(0);
-            m4.setPower(0);
-            m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            return true;
-        }
-        else {
-            return false;
-        }
+    public void stopMotor() {
+        m1.setPower(0);
+        m2.setPower(0);
+        m3.setPower(0);
+        m4.setPower(0);
+        m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void slideExtend(double power, int p1) {
+        slide.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        slide.setTargetPosition(p1);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(power);
+    }
+
+    public void stopSlide() {
+        pivot.setPower(0);
+        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public void pivotStay(double power, int p1){
