@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "TeleOp Freight Frenzy")
-public class TeleOp_Freight_Frenzy extends LinearOpMode {
+public class TeleOp_All extends LinearOpMode {
 
     private DcMotor m1;
     private DcMotor m2;

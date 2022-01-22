@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name = "Auto Red Inside Freight Frenzy")
-public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
+@Autonomous(name = "Auto Red Outside Freight Frenzy")
+public class Auto_Red_Storage extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
@@ -40,6 +40,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
 
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
@@ -67,52 +68,35 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     public void mainFSM() {
         switch (state) {
             case 0:
-                runMotorDistance(0.4, -1650,-1650,0,-1650);
+                runMotorDistance(0.5, -1010,-1490,1500,970);
                 previous = state;
                 state = -2;
                 break;
             case 1:
-                runMotorDistance(0.4, 300,-300,300,-300);
-                previous = state;
-                state = -2;
-                break;
-            case 2:
-                runMotorDistance(1, -1850,-1850,1850,1850);
-                previous = state;
-                state = -2;
-                break;
-            case 3:
                 state = -1;
             case -2:
                 if (stopMotor()) {
                     state = previous + 1;
+                    break;
                 }
-                break;
         }
         pivotStay(0.3, 0);
-        dashboardTelemetry.addData("Motor Encoder", m1.getCurrentPosition());
-        dashboardTelemetry.addData("State", state);
-        dashboardTelemetry.update();
     }
 
     // set the target power and distance and start moving
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
-
         m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         m1.setTargetPosition(p1);
         m2.setTargetPosition(p2);
         m3.setTargetPosition(p3);
         m4.setTargetPosition(p4);
-
         m1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         m1.setPower(power);
         m2.setPower(power);
         m3.setPower(power);
@@ -135,6 +119,18 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         else {
             return false;
         }
+    }
+
+    public void slideExtend(double power, int p1) {
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slide.setTargetPosition(p1);
+        slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        slide.setPower(power);
+    }
+
+    public void stopSlide() {
+        pivot.setPower(0);
+        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     // maintain pivot position

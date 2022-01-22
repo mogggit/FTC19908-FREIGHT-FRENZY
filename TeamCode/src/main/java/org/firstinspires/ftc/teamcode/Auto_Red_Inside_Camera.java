@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Auto Red Inside Camera Freight Frenzy")
-public class Auto_Red_Inside_Camera_Freight_Frenzy extends LinearOpMode {
+public class Auto_Red_Inside_Camera extends LinearOpMode {
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {"Ball", "Cube", "Duck", "Marker"};
