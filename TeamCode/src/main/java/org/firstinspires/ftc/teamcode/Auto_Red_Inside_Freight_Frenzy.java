@@ -34,6 +34,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     private DcMotor spinner;
     private Servo grab;
 
+    private int pervious;
     private int state;
 
     @Override
@@ -54,6 +55,8 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
+
+        pervious = 0;
         state = 0;
 
         waitForStart();
@@ -66,32 +69,43 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         }
     }
 
+    // Main Finite State Machine
+    // States:
+    // -1 -> stop program
+    // -2 -> stop motor
+    // 0~ -> moves
     public void mainFSM() {
         switch (state) {
             case 0:
-                runMotorDistance(0.5, -870,-2166,188,-1125);
-                state += 1;
+                runMotorDistance(0.4, -1650,-1650,0,-1650);
+                pervious = state;
+                state = -2;
                 break;
             case 1:
-                if (stopMotor()) {
-                    state += 1;
-                    break;
-                }
+                runMotorDistance(0.4, 300,-300,300,-300);
+                pervious = state;
+                state = -2;
+                break;
             case 2:
                 runMotorDistance(1, -1850,-1850,1850,1850);
-                state += 1;
+                pervious = state;
+                state = -2;
                 break;
             case 3:
+                state = -1;
+            case -2:
                 if (stopMotor()) {
-                    state = -1;
-                    break;
+                    state = pervious + 1;
                 }
+                break;
         }
         pivotStay(0.3, 0);
+        dashboardTelemetry.addData("Motor Encoder", m1.getCurrentPosition());
         dashboardTelemetry.addData("State", state);
         dashboardTelemetry.update();
     }
 
+    // set the target power and distance and start moving
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
 
         m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -115,6 +129,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         m4.setPower(power);
     }
 
+    // return true if the motor reached target position
     public boolean stopMotor() {
         if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
             m1.setPower(0);
