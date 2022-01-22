@@ -15,10 +15,10 @@ public class Drivetrain {
        ------
      */
 
-    private DcMotor m1;
-    private DcMotor m2;
-    private DcMotor m3;
-    private DcMotor m4;
+    private final DcMotor m1;
+    private final DcMotor m2;
+    private final DcMotor m3;
+    private final DcMotor m4;
 
     // Constructor
     public Drivetrain(DcMotor m1, DcMotor m2, DcMotor m3, DcMotor m4) {

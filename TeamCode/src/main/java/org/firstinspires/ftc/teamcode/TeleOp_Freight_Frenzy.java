@@ -71,7 +71,6 @@ public class TeleOp_Freight_Frenzy extends LinearOpMode {
 
         waitForStart();
         if (opModeIsActive()) {
-            double startTime = getRuntime();
             while (opModeIsActive()) {
                 /* Mecanum Wheels */
                 m1.setPower(-gamepad2.left_stick_x + gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);

@@ -122,7 +122,7 @@ public class Auto_Red_Outside_Freight_Frenzy extends LinearOpMode {
     }
 
     public void slideExtend(double power, int p1) {
-        slide.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slide.setTargetPosition(p1);
         slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         slide.setPower(power);
