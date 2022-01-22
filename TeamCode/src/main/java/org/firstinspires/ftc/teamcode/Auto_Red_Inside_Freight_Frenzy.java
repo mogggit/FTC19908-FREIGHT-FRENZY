@@ -2,22 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.tensorflow.lite.task.vision.detector.Detection;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Autonomous(name = "Auto Red Inside Freight Frenzy")
 public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
@@ -34,7 +23,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
     private DcMotor spinner;
     private Servo grab;
 
-    private int pervious;
+    private int previous;
     private int state;
 
     @Override
@@ -51,12 +40,11 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
 
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
 
-        pervious = 0;
+        previous = 0;
         state = 0;
 
         waitForStart();
@@ -69,33 +57,35 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         }
     }
 
-    // Main Finite State Machine
-    // States:
-    // -1 -> stop program
-    // -2 -> stop motor
-    // 0~ -> moves
+    /*
+    Main Finite State Machine
+    States:
+    -1 -> end program
+    -2 -> stop motor
+    0~ -> moves
+     */
     public void mainFSM() {
         switch (state) {
             case 0:
                 runMotorDistance(0.4, -1650,-1650,0,-1650);
-                pervious = state;
+                previous = state;
                 state = -2;
                 break;
             case 1:
                 runMotorDistance(0.4, 300,-300,300,-300);
-                pervious = state;
+                previous = state;
                 state = -2;
                 break;
             case 2:
                 runMotorDistance(1, -1850,-1850,1850,1850);
-                pervious = state;
+                previous = state;
                 state = -2;
                 break;
             case 3:
                 state = -1;
             case -2:
                 if (stopMotor()) {
-                    state = pervious + 1;
+                    state = previous + 1;
                 }
                 break;
         }
@@ -129,7 +119,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         m4.setPower(power);
     }
 
-    // return true if the motor reached target position
+    // return true and stop motor if the motor reached target position
     public boolean stopMotor() {
         if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
             m1.setPower(0);
@@ -147,6 +137,7 @@ public class Auto_Red_Inside_Freight_Frenzy extends LinearOpMode {
         }
     }
 
+    // maintain pivot position
     public void pivotStay(double power, int p1){
         double pivotPower = power * ((p1 - pivot.getCurrentPosition()) / 100.0);
         if (pivotPower > 0.5) {

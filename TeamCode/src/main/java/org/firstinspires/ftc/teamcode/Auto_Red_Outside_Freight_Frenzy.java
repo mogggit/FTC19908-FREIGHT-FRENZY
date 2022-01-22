@@ -23,6 +23,7 @@ public class Auto_Red_Outside_Freight_Frenzy extends LinearOpMode {
     private DcMotor spinner;
     private Servo grab;
 
+    private int previous;
     private int state;
 
     @Override
@@ -43,68 +44,81 @@ public class Auto_Red_Outside_Freight_Frenzy extends LinearOpMode {
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
+
+        previous = 0;
         state = 0;
 
         waitForStart();
 
         while (opModeIsActive()) {
-
             mainFSM();
-
             if (state == -1) {
                 break;
             }
         }
     }
 
+    /*
+    Main Finite State Machine
+    States:
+    -1 -> end program
+    -2 -> stop motor
+    0~ -> moves
+     */
     public void mainFSM() {
         switch (state) {
             case 0:
                 runMotorDistance(0.5, -1010,-1490,1500,970);
-                state = 1;
+                previous = state;
+                state = -2;
                 break;
             case 1:
-                if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
-                    stopMotor();
-                    state = -1;
+                state = -1;
+            case -2:
+                if (stopMotor()) {
+                    state = previous + 1;
                     break;
                 }
         }
         pivotStay(0.3, 0);
     }
 
+    // set the target power and distance and start moving
     public void runMotorDistance(double power, int p1, int p2, int p3, int p4) {
-
         m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
         m1.setTargetPosition(p1);
         m2.setTargetPosition(p2);
         m3.setTargetPosition(p3);
         m4.setTargetPosition(p4);
-
         m1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m3.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         m4.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         m1.setPower(power);
         m2.setPower(power);
         m3.setPower(power);
         m4.setPower(power);
     }
 
-    public void stopMotor() {
-        m1.setPower(0);
-        m2.setPower(0);
-        m3.setPower(0);
-        m4.setPower(0);
-        m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    // return true and stop motor if the motor reached target position
+    public boolean stopMotor() {
+        if (!m1.isBusy() && !m2.isBusy() && !m3.isBusy() && !m4.isBusy()) {
+            m1.setPower(0);
+            m2.setPower(0);
+            m3.setPower(0);
+            m4.setPower(0);
+            m1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            m2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            m3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            m4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public void slideExtend(double power, int p1) {
@@ -119,6 +133,7 @@ public class Auto_Red_Outside_Freight_Frenzy extends LinearOpMode {
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
+    // maintain pivot position
     public void pivotStay(double power, int p1){
         double pivotPower = power * ((p1 - pivot.getCurrentPosition()) / 100.0);
         if (pivotPower > 0.5) {
