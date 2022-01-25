@@ -4,18 +4,18 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name = "Auto Red Warehouse")
-public class Auto_Red_Warehouse extends LinearOpMode {
+@Autonomous(name = "Auto Blue Storage")
+public class Auto_Blue_Storage extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
 
     private Drivetrain drivetrain;
     private DcMotor pivot;
+    private DcMotor spinner;
 
     private int previous;
     private int state;
@@ -31,7 +31,9 @@ public class Auto_Red_Warehouse extends LinearOpMode {
         );
 
         pivot = hardwareMap.dcMotor.get("pivot"); // pivot
+        spinner = hardwareMap.dcMotor.get("spinner"); // spinner
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         dashboard = FtcDashboard.getInstance();
         dashboardTelemetry = dashboard.getTelemetry();
@@ -59,34 +61,22 @@ public class Auto_Red_Warehouse extends LinearOpMode {
     public void mainFSM() {
         switch (state) {
             case 0:
-                drivetrain.runMotorDistance(0.4, -1350,-1900,0,-1000);
+                drivetrain.runMotorDistance(0.5, -1588, -810,925,1600);
                 previous = state;
                 state = -2;
                 break;
             case 1:
-                drivetrain.runMotorDistance(0.4, 300,-300,300,-300);
-                previous = state;
-                state = -2;
-                break;
-            case 2:
-                drivetrain.runMotorDistance(1, -1850,-1850,1850,1850);
-                previous = state;
-                state = -2;
-                break;
-            case 3:
                 state = -1;
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
+                    break;
                 }
-                break;
         }
         pivotStay(0.3, 0);
-        dashboardTelemetry.addData("State", state);
-        dashboardTelemetry.update();
     }
 
-    // Maintain pivot position
+    // maintain pivot position
     public void pivotStay(double power, int p1){
         double pivotPower = power * ((p1 - pivot.getCurrentPosition()) / 100.0);
         if (pivotPower > 0.5) {

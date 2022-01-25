@@ -19,7 +19,7 @@ import org.tensorflow.lite.task.vision.detector.Detection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Autonomous(name = "Auto Red Inside Camera Freight Frenzy")
+@Autonomous(name = "Auto Red Inside Camera")
 public class Auto_Red_Inside_Camera extends LinearOpMode {
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";

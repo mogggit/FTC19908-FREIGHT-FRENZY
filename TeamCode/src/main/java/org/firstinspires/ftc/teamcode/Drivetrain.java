@@ -73,4 +73,37 @@ public class Drivetrain {
         m3.setPower(-gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
         m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
     }
+
+    public void driveMode() {
+        m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public int getEncoder(String motorName) {
+        if (motorName.equals("m1")) {
+            return m1.getCurrentPosition();
+        }
+        else if (motorName.equals("m2")) {
+            return m2.getCurrentPosition();
+        }
+        else if (motorName.equals("m3")) {
+            return m3.getCurrentPosition();
+        }
+        else if (motorName.equals("m4")) {
+            return m4.getCurrentPosition();
+        }
+        else {
+            return 0;
+        }
+    }
 }

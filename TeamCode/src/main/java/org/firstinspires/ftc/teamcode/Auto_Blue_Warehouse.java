@@ -4,12 +4,11 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name = "Auto Red Warehouse Freight Frenzy")
-public class Auto_Red_Warehouse_2 extends LinearOpMode {
+@Autonomous(name = "Auto Blue Warehouse")
+public class Auto_Blue_Warehouse extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
@@ -59,12 +58,12 @@ public class Auto_Red_Warehouse_2 extends LinearOpMode {
     public void mainFSM() {
         switch (state) {
             case 0:
-                drivetrain.runMotorDistance(0.4, -1650,-1650,0,-1650);
+                drivetrain.runMotorDistance(0.4, 0,1000,1350,1900);
                 previous = state;
                 state = -2;
                 break;
             case 1:
-                drivetrain.runMotorDistance(0.4, 300,-300,300,-300);
+                drivetrain.runMotorDistance(0.4, -300,300,-300,300);
                 previous = state;
                 state = -2;
                 break;
