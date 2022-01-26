@@ -67,11 +67,12 @@ public class Auto_Blue_Storage extends LinearOpMode {
                 break;
             case 1:
                 state = -1;
+                break;
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
-                    break;
                 }
+                break;
         }
         pivotStay(0.3, 0);
     }
