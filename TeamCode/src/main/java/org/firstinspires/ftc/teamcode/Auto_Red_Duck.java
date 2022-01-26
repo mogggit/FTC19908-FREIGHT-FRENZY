@@ -76,8 +76,8 @@ public class Auto_Red_Duck extends LinearOpMode {
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
-                    break;
                 }
+                break;
         }
         pivotStay(0.3, 0);
     }
