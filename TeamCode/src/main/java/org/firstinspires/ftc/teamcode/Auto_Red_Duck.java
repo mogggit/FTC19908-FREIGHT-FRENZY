@@ -69,8 +69,10 @@ public class Auto_Red_Duck extends LinearOpMode {
                 drivetrain.runMotorDistance(0.5, 6000,6000,6000,6000);
                 previous = state;
                 state = -2;
+                break;
             case 2:
                 state = -1;
+                break;
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
