@@ -74,6 +74,7 @@ public class Auto_Blue_Warehouse extends LinearOpMode {
                 break;
             case 3:
                 state = -1;
+                break;
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
