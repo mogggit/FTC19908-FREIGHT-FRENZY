@@ -61,12 +61,12 @@ public class Auto_Red_Duck extends LinearOpMode {
     public void mainFSM() {
         switch (state) {
             case 0:
-                drivetrain.runMotorDistance(0.5, -200,-200,200,200);
+                drivetrain.runMotorDistance(0.5, -300,-300,300,300);
                 previous = state;
                 state = -2;
                 break;
             case 1:
-                drivetrain.runMotorDistance(0.5, 6000,6000,6000,6000);
+                drivetrain.runMotorDistance(0.5, 8000,8000,8000,8000);
                 previous = state;
                 state = -2;
                 break;

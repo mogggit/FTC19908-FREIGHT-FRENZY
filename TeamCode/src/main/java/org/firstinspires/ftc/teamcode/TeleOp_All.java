@@ -132,6 +132,7 @@ public class TeleOp_All extends LinearOpMode {
                 dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
                 dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
                 dashboardTelemetry.addData("Touch Sensor", touch.getValue());
+                dashboardTelemetry.addLine("Test");
                 dashboardTelemetry.update();
             }
         }

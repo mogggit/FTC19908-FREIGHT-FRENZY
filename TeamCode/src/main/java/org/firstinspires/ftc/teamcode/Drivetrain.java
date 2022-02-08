@@ -74,6 +74,7 @@ public class Drivetrain {
         m4.setPower(gamepad2.left_stick_x - gamepad2.left_stick_y + gamepad2.left_trigger - gamepad2.right_trigger);
     }
 
+    // Set the motor modes for TeleOp
     public void driveMode() {
         m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
@@ -89,6 +90,7 @@ public class Drivetrain {
         m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
+    // Return encoder values for selected motor
     public int getEncoder(String motorName) {
         if (motorName.equals("m1")) {
             return m1.getCurrentPosition();
