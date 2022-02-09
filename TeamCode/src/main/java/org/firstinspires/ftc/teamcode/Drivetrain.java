@@ -76,6 +76,10 @@ public class Drivetrain {
 
     // Set the motor modes for TeleOp
     public void driveMode() {
+        m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         m1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -84,10 +88,7 @@ public class Drivetrain {
         m3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         m4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         m4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        m1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        m4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 
     // Return encoder values for selected motor
