@@ -19,6 +19,7 @@ public class Auto_Red_Duck extends LinearOpMode {
 
     private int previous;
     private int state;
+    private double timer;
 
     @Override
     public void runOpMode() {
@@ -58,6 +59,7 @@ public class Auto_Red_Duck extends LinearOpMode {
     -2 -> stop motor
     0~ -> moves
      */
+
     public void mainFSM() {
         switch (state) {
             case 0:
@@ -66,11 +68,35 @@ public class Auto_Red_Duck extends LinearOpMode {
                 state = -2;
                 break;
             case 1:
-                drivetrain.runMotorDistance(0.5, 8000,8000,8000,8000);
+                drivetrain.runMotorDistance(0.5, 790,790,790,790);
                 previous = state;
                 state = -2;
                 break;
             case 2:
+                drivetrain.runMotorDistance(0.9, 0,-400,400,0);
+                spinner.setPower(0.5);
+                timer = getRuntime();
+                previous = state;
+                state = -2;
+                break;
+            case 3:
+                if (getRuntime() >= timer + 3.5) {
+                    spinner.setPower(0);
+                    previous = state;
+                    state = -2;
+                }
+                break;
+            case 4:
+                drivetrain.runMotorDistance(0.5, -1440,350,-580,1330);
+                previous = state;
+                state = -2;
+                break;
+            case 5:
+                drivetrain.runMotorDistance(0.5, 360,360,360,360);
+                previous = state;
+                state = -2;
+                break;
+            case 6:
                 state = -1;
                 break;
             case -2:
