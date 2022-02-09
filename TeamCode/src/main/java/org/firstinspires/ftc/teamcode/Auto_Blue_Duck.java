@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@Autonomous(name = "Auto Red Duck")
-public class Auto_Red_Duck extends LinearOpMode {
+@Autonomous(name = "Auto Blue Duck")
+public class Auto_Blue_Duck extends LinearOpMode {
 
     private FtcDashboard dashboard;
     private Telemetry dashboardTelemetry;
@@ -69,12 +68,12 @@ public class Auto_Red_Duck extends LinearOpMode {
                 state = -2;
                 break;
             case 1:
-                drivetrain.runMotorDistance(0.5, 790,790,790,790);
+                drivetrain.runMotorDistance(0.5, -2100,-2100,-2100,-2100);
                 previous = state;
                 state = -2;
                 break;
             case 2:
-                drivetrain.runMotorDistance(0.9, 0,-400,400,0);
+                drivetrain.runMotorDistance(0.9, 0,-410,410,0);
                 spinner.setPower(0.5);
                 timer = getRuntime();
                 previous = state;
@@ -88,16 +87,11 @@ public class Auto_Red_Duck extends LinearOpMode {
                 }
                 break;
             case 4:
-                drivetrain.runMotorDistance(0.5, -1440,350,-580,1330);
+                drivetrain.runMotorDistance(0.5, 1250,970,-970,-1250);
                 previous = state;
                 state = -2;
                 break;
             case 5:
-                drivetrain.runMotorDistance(0.5, 360,360,360,360);
-                previous = state;
-                state = -2;
-                break;
-            case 6:
                 state = -1;
                 break;
             case -2:

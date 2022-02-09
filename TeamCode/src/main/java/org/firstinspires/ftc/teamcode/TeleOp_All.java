@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -19,8 +20,7 @@ public class TeleOp_All extends LinearOpMode {
     private Servo grab;
     private TouchSensor touch;
 
-    private FtcDashboard dashboard;
-    private Telemetry dashboardTelemetry;
+    private MultipleTelemetry tel = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
     @Override
     public void runOpMode() {
@@ -48,9 +48,6 @@ public class TeleOp_All extends LinearOpMode {
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
-        dashboard = FtcDashboard.getInstance();
-        dashboardTelemetry = dashboard.getTelemetry();
-
         int grabValue = -140;
         int balanceValue = 0;
         int topValue = 1000;
@@ -65,8 +62,8 @@ public class TeleOp_All extends LinearOpMode {
 
                 //-145
                 //1300
-                dashboardTelemetry.addData("Gamepad1.left_stick_y", gamepad1.left_stick_y);
-                dashboardTelemetry.addData("Gamepad1.right_stick_y", gamepad1.right_stick_y);
+                tel.addData("Gamepad1.left_stick_y", gamepad1.left_stick_y);
+                tel.addData("Gamepad1.right_stick_y", gamepad1.right_stick_y);
                 spinner.setPower(gamepad1.right_trigger);
 
                 if (gamepad1.right_bumper) {
@@ -120,20 +117,15 @@ public class TeleOp_All extends LinearOpMode {
                     balanceValue += pivotCorrection;
                 }
 
-                if (touch.isPressed()) {
-                    dashboardTelemetry.addData("Touch", "Pressed");
-                }
-
-                dashboardTelemetry.addData("M1 Encoder", drivetrain.getEncoder("m1"));
-                dashboardTelemetry.addData("M2 Encoder", drivetrain.getEncoder("m2"));
-                dashboardTelemetry.addData("M3 Encoder", drivetrain.getEncoder("m3"));
-                dashboardTelemetry.addData("M4 Encoder", drivetrain.getEncoder("m4"));
-                dashboardTelemetry.addData("Pivot Correction", pivotCorrection);
-                dashboardTelemetry.addData("Slides Encoder", slide.getCurrentPosition());
-                dashboardTelemetry.addData("Pivot Position", pivot.getCurrentPosition());
-                dashboardTelemetry.addData("Touch Sensor", touch.getValue());
-                dashboardTelemetry.addLine("Test");
-                dashboardTelemetry.update();
+                tel.addData("M1 Encoder", drivetrain.getEncoder("m1"));
+                tel.addData("M2 Encoder", drivetrain.getEncoder("m2"));
+                tel.addData("M3 Encoder", drivetrain.getEncoder("m3"));
+                tel.addData("M4 Encoder", drivetrain.getEncoder("m4"));
+                tel.addData("Pivot Correction", pivotCorrection);
+                tel.addData("Slides Encoder", slide.getCurrentPosition());
+                tel.addData("Pivot Position", pivot.getCurrentPosition());
+                tel.addData("Touch Sensor", touch.getValue());
+                tel.update();
             }
         }
     }
