@@ -52,6 +52,7 @@ public class TeleOp_All extends LinearOpMode {
         int balanceValue = 0;
         int topValue = 1000;
         int highValue = 1200;
+        int lowValue = -100;
         double pivotCorrection = 0;
 
         waitForStart();
@@ -101,20 +102,24 @@ public class TeleOp_All extends LinearOpMode {
 
                 if (gamepad1.right_stick_y != 0) {
                     pivotCorrection = -gamepad1.right_stick_y;
-
                     grabValue += pivotCorrection;
                     highValue += pivotCorrection;
                     topValue += pivotCorrection;
                     balanceValue += pivotCorrection;
+                    lowValue += pivotCorrection;
                 }
 
                 if (gamepad2.right_stick_y != 0) {
                     pivotCorrection = -gamepad1.right_stick_y;
-
                     grabValue += pivotCorrection;
                     highValue += pivotCorrection;
                     topValue += pivotCorrection;
                     balanceValue += pivotCorrection;
+                    lowValue += pivotCorrection;
+                }
+
+                if (gamepad1.a) {
+                    pivotStay(0.3, lowValue);
                 }
 
                 tel.addData("M1 Encoder", drivetrain.getEncoder("m1"));
