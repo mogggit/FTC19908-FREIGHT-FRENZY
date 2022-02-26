@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -31,10 +32,12 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
     private DcMotor pivot;
     private DcMotor spinner;
     private Slide slide;
+    private Servo grab;
 
     private int previous;
     private int state;
     private int position;
+    private int pivotPos;
     private double timer;
 
     @Override
@@ -66,6 +69,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
 
         pivot = hardwareMap.dcMotor.get("pivot"); // pivot
         spinner = hardwareMap.dcMotor.get("spinner"); // spinner
+        grab = hardwareMap.servo.get("grab"); // grab
         pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -75,6 +79,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
 
         previous = 0;
         state = 0;
+        pivotPos = 0;
 
         waitForStart();
         while (opModeIsActive()) {
@@ -96,9 +101,12 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
         switch (state) {
             case 0:
                 timer = getRuntime();
+                grab.setPosition(0.1);
+                pivotPos = -50;
                 state++;
+                break;
             case 1:
-                if (getRuntime() >= timer + 2) {
+                if (getRuntime() >= timer + 3) {
                     previous = state;
                     state++;
                 }
@@ -120,13 +128,13 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                             double pos = (recognition.getLeft() + recognition.getRight()) / 2;
 
                             if (pos >= 222 && pos <= 430) {
-                                position = 1; // middle
+                                position = 2; // middle
                             }
                             else if (recognition.getLeft() < 222) {
-                                position = 0; // left
+                                position = 1; // left
                             }
                             else {
-                                position = 2; // right
+                                position = 3; // right
                             }
                             dashboardTelemetry.addData(String.format("position (%d)", i), position);
                             i++;
@@ -139,10 +147,50 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 break;
             case 3:
                 drivetrain.runMotorDistance(0.5, -450,-1200,1200,450);
+                slide.extend(-0.5, -4200);
+
+                if (position == 1) {
+                    pivotPos = 320;
+                }
+                else if (position == 2) {
+                    pivotPos = 37;
+                }
+                else {
+                    pivotPos = -100;
+                }
+
                 previous = state;
                 state = -2;
                 break;
             case 4:
+                drivetrain.runMotorDistance(0.5, 400,400,400,400);
+                previous = state;
+                state = -2;
+                break;
+            case 5:
+                if (slide.stopSlide()) {
+                    previous = state;
+                    state++;
+                }
+                break;
+            case 6:
+                grab.setPosition(1);
+                timer = getRuntime();
+                previous = state;
+                state++;
+                break;
+            case 7:
+                if (getRuntime() >= timer + 0.5) {
+                    previous = state;
+                    state++;
+                }
+                break;
+            case 8:
+                grab.setPosition(0.42);
+                previous = state;
+                state++;
+                break;
+            case 9:
                 state = -1;
                 break;
             case -2:
@@ -151,7 +199,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 }
                 break;
         }
-        pivotStay(0.3, -50);
+        pivotStay(0.35, pivotPos);
     }
 
     // maintain pivot position

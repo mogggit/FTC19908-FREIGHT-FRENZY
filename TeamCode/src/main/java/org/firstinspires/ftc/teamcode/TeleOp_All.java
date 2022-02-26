@@ -42,17 +42,15 @@ public class TeleOp_All extends LinearOpMode {
         slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        drivetrain.driveMode();
-
         spinner.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         spinner.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        drivetrain.driveMode();
 
         int grabValue = -140;
         int balanceValue = 0;
         int topValue = 1000;
         int highValue = 1200;
-        int lowValue = -100;
+        int lowValue = -90;
         double pivotCorrection = 0;
 
         waitForStart();

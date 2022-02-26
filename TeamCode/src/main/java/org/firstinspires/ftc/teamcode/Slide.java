@@ -13,7 +13,7 @@ public class Slide {
         this.touch = touch;
     }
 
-    public void extendSlide(double power, int p1) {
+    public void extend(double power, int p1) {
         if (touch.isPressed()) {
             s1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
