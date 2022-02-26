@@ -30,6 +30,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
     private Drivetrain drivetrain;
     private DcMotor pivot;
     private DcMotor spinner;
+    private Slide slide;
 
     private int previous;
     private int state;
@@ -56,6 +57,11 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 hardwareMap.dcMotor.get("M2"), // bottom left wheel
                 hardwareMap.dcMotor.get("M3"), // top right wheel
                 hardwareMap.dcMotor.get("M4")  // bottom right wheel
+        );
+
+        slide = new Slide(
+                hardwareMap.dcMotor.get("slide"),
+                hardwareMap.touchSensor.get("touch")
         );
 
         pivot = hardwareMap.dcMotor.get("pivot"); // pivot
