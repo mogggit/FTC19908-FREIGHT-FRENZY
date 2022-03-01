@@ -47,11 +47,6 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
 
         if (tfod != null) {
             tfod.activate();
-
-            // The TensorFlow software will scale the input images from the camera to a lower resolution.
-            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
-            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
-            // to artificially zoom in to the center of image.
             tfod.setZoom(1, 16.0/9.0);
         }
 
@@ -106,7 +101,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 state++;
                 break;
             case 1:
-                if (getRuntime() >= timer + 3) {
+                if (getRuntime() >= timer + 5) {
                     previous = state;
                     state++;
                 }
@@ -150,16 +145,20 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 slide.extend(-0.5, -4200);
 
                 if (position == 1) {
-                    pivotPos = 320;
+                    pivotPos = 350;
+                    state = 4;
                 }
                 else if (position == 2) {
                     pivotPos = 37;
+                    state = 15;
                 }
                 else {
                     pivotPos = -100;
+                    // TODO: change state
+                    state = 4;
                 }
 
-                previous = state;
+                previous = 3;
                 state = -2;
                 break;
             case 4:
@@ -174,25 +173,57 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 }
                 break;
             case 6:
+                drivetrain.runMotorDistance(0.5, -360,-360,360,360);
+                previous = state;
+                state = -2;
+                break;
+            case 7:
                 grab.setPosition(1);
                 timer = getRuntime();
                 previous = state;
                 state++;
                 break;
-            case 7:
+            case 8:
                 if (getRuntime() >= timer + 0.5) {
                     previous = state;
                     state++;
                 }
                 break;
-            case 8:
+            case 9:
                 grab.setPosition(0.42);
+                timer = getRuntime();
                 previous = state;
                 state++;
                 break;
-            case 9:
+            case 10:
+                if (getRuntime() >= timer + 1) {
+                    previous = state;
+                    state++;
+                }
+                break;
+            case 11:
+                drivetrain.runMotorDistance(0.5, 300,300,-300,-300);
+                previous = state;
+                state = -2;
+                break;
+            case 12:
+                drivetrain.runMotorDistance(0.5, -1440,-1440,-1440,-1440);
+                previous = state;
+                state = -2;
+                break;
+            case 13:
+                drivetrain.runMotorDistance(1, -2000,-2000,2000,2000);
+                pivotPos = 0;
+                previous = state;
+                state = -2;
+                break;
+            case 14:
                 state = -1;
                 break;
+            case 15:
+                //TODO: layer 2
+            case 16:
+                //TODO: layer 3
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
