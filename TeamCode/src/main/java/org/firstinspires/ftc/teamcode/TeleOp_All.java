@@ -51,8 +51,8 @@ public class TeleOp_All extends LinearOpMode {
 
         // encoder values for different pivot positionsd
         int grabValue = -140; // almost touch the ground to grab game elements
-        int balanceValue = 0; // horinzontal
-        int topValue = 1000; // verticle
+        int balanceValue = 0; // horizontal
+        int topValue = 1000; // vertical
         int highValue = 1200; // high level
         int lowValue = -90; // low level
         double pivotCorrection = 0; // manual correction
