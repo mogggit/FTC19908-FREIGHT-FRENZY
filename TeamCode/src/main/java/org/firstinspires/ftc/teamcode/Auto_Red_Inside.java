@@ -13,10 +13,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import java.util.List;
 
-@Autonomous(name = "Auto Red Camera New")
-public class Auto_Red_Inside_Camera_New extends LinearOpMode {
+@Autonomous(name = "Auto Red Inside")
+public class Auto_Red_Inside extends LinearOpMode {
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {"Ball", "Cube", "Duck", "Marker"};
@@ -120,18 +122,19 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                             dashboardTelemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
 
-                            double pos = (recognition.getLeft() + recognition.getRight()) / 2;
-
-                            if (pos >= 222 && pos <= 430) {
-                                position = 2; // middle
+                            if (recognition.getLabel() == "Duck") {
+                                double pos = (recognition.getLeft() + recognition.getRight()) / 2;
+                                if (pos >= 222 && pos <= 430) {
+                                    position = 2; // middle
+                                }
+                                else if (recognition.getLeft() < 222) {
+                                    position = 1; // left
+                                }
+                                else {
+                                    position = 3; // right
+                                }
+                                dashboardTelemetry.addData(String.format("position (%d)", i), position);
                             }
-                            else if (recognition.getLeft() < 222) {
-                                position = 1; // left
-                            }
-                            else {
-                                position = 3; // right
-                            }
-                            dashboardTelemetry.addData(String.format("position (%d)", i), position);
                             i++;
                         }
                         dashboardTelemetry.update();
@@ -149,18 +152,20 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                     state = 4;
                 }
                 else if (position == 2) {
-                    pivotPos = 37;
+                    pivotPos = 85;
                     state = 15;
                 }
                 else {
                     pivotPos = -100;
                     // TODO: change state
-                    state = 4;
+                    state = -1;
                 }
 
-                previous = 3;
+                previous = state - 1;
                 state = -2;
                 break;
+
+            //Start of layer 1
             case 4:
                 drivetrain.runMotorDistance(0.5, 400,400,400,400);
                 previous = state;
@@ -168,7 +173,6 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 break;
             case 5:
                 if (slide.stopSlide()) {
-                    previous = state;
                     state++;
                 }
                 break;
@@ -180,25 +184,30 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
             case 7:
                 grab.setPosition(1);
                 timer = getRuntime();
-                previous = state;
                 state++;
                 break;
             case 8:
                 if (getRuntime() >= timer + 0.5) {
-                    previous = state;
                     state++;
                 }
                 break;
             case 9:
                 grab.setPosition(0.42);
                 timer = getRuntime();
-                previous = state;
                 state++;
                 break;
             case 10:
                 if (getRuntime() >= timer + 1) {
-                    previous = state;
-                    state++;
+                    if (position == 1) {
+                        state = 11;
+                    }
+                    else if (position == 2) {
+                        state = 18;
+                    }
+                    else {
+                        // TODO: change state
+                        state = -1;
+                    }
                 }
                 break;
             case 11:
@@ -212,7 +221,7 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
                 state = -2;
                 break;
             case 13:
-                drivetrain.runMotorDistance(1, -2000,-2000,2000,2000);
+                drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
                 pivotPos = 0;
                 previous = state;
                 state = -2;
@@ -220,10 +229,47 @@ public class Auto_Red_Inside_Camera_New extends LinearOpMode {
             case 14:
                 state = -1;
                 break;
+
+            //Start of layer 2
             case 15:
-                //TODO: layer 2
+                drivetrain.runMotorDistance(0.51, 400,400,400,400);
+                previous = state;
+                state = -2;
+                break;
             case 16:
-                //TODO: layer 3
+                drivetrain.runMotorDistance(0.50, -100,-100,100,100);
+                previous = state;
+                state = -2;
+                break;
+            case 17:
+                pivotPos = 80;
+                state = 7;
+                break;
+            case 18:
+                pivotPos = 100;
+                drivetrain.runMotorDistance(0.50, 200,200,-200,-200);
+                previous = state;
+                state = -2;
+                break;
+            case 19:
+                drivetrain.runMotorDistance(0.5, -1450,-1450,-1450,-1450);
+                pivotPos = 0;
+                previous = state;
+                state = -2;
+                break;
+            case 20:
+                drivetrain.runMotorDistance(0.5, -1300,-1300,1300,1300);
+                previous = state;
+                state = -2;
+                break;
+            case 21:
+                state = -1;
+                break;
+            case 22:
+                pivotStay(0.3500, pivotPos);
+                break;
+
+            //Stop motor
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
