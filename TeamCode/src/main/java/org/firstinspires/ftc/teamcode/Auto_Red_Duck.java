@@ -74,7 +74,7 @@ public class Auto_Red_Duck extends LinearOpMode {
                 state = -2;
                 break;
             case 2:
-                drivetrain.runMotorDistance(0.9, 0,-400,400,0);
+                drivetrain.runMotorDistance(0.9, 0,-480,480,0);
                 spinner.setPower(0.5);
                 timer = getRuntime();
                 previous = state;
@@ -88,7 +88,7 @@ public class Auto_Red_Duck extends LinearOpMode {
                 }
                 break;
             case 4:
-                drivetrain.runMotorDistance(0.5, -1440,350,-580,1330);
+                drivetrain.runMotorDistance(0.5, -1720,493,-793,1627);
                 previous = state;
                 state = -2;
                 break;

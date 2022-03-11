@@ -124,16 +124,17 @@ public class Auto_Red_Inside extends LinearOpMode {
 
                             if (recognition.getLabel() == "Duck") {
                                 double pos = (recognition.getLeft() + recognition.getRight()) / 2;
-                                if (pos >= 222 && pos <= 430) {
+                                if (pos >= 165 && pos <= 466) {
                                     position = 2; // middle
                                 }
-                                else if (recognition.getLeft() < 222) {
+                                else if (pos < 165) {
                                     position = 1; // left
                                 }
                                 else {
                                     position = 3; // right
                                 }
                                 dashboardTelemetry.addData(String.format("position (%d)", i), position);
+                                dashboardTelemetry.addData(String.format("mid value (%d)", i), pos);
                             }
                             i++;
                         }
@@ -146,7 +147,6 @@ public class Auto_Red_Inside extends LinearOpMode {
             case 3:
                 drivetrain.runMotorDistance(0.5, -450,-1200,1200,450);
                 slide.extend(-0.5, -4200);
-
                 if (position == 1) {
                     pivotPos = 350;
                     state = 4;
@@ -156,16 +156,12 @@ public class Auto_Red_Inside extends LinearOpMode {
                     state = 15;
                 }
                 else {
-                    pivotPos = -100;
-                    // TODO: change state
-                    state = -1;
+                    state = 22;
                 }
-
                 previous = state - 1;
                 state = -2;
                 break;
-
-            //Start of layer 1
+//-----------------------------------Start of layer 1----------------------------------
             case 4:
                 drivetrain.runMotorDistance(0.5, 400,400,400,400);
                 previous = state;
@@ -181,6 +177,7 @@ public class Auto_Red_Inside extends LinearOpMode {
                 previous = state;
                 state = -2;
                 break;
+//-----------------------------------Per-load box release----------------------------------
             case 7:
                 grab.setPosition(1);
                 timer = getRuntime();
@@ -205,11 +202,11 @@ public class Auto_Red_Inside extends LinearOpMode {
                         state = 18;
                     }
                     else {
-                        // TODO: change state
-                        state = -1;
+                        state = 24;
                     }
                 }
                 break;
+//-----------------------------------------------------------------------------------------
             case 11:
                 drivetrain.runMotorDistance(0.5, 300,300,-300,-300);
                 previous = state;
@@ -229,8 +226,7 @@ public class Auto_Red_Inside extends LinearOpMode {
             case 14:
                 state = -1;
                 break;
-
-            //Start of layer 2
+//-----------------------------------Start of layer 2----------------------------------
             case 15:
                 drivetrain.runMotorDistance(0.51, 400,400,400,400);
                 previous = state;
@@ -258,18 +254,27 @@ public class Auto_Red_Inside extends LinearOpMode {
                 state = -2;
                 break;
             case 20:
-                drivetrain.runMotorDistance(0.5, -1300,-1300,1300,1300);
+                drivetrain.runMotorDistance(0.5, -2000,-2000,2000,2000);
                 previous = state;
                 state = -2;
                 break;
             case 21:
                 state = -1;
                 break;
+//-----------------------------------Start of layer 3----------------------------------
             case 22:
-                pivotStay(0.3500, pivotPos);
+                pivotPos = -70;
+                drivetrain.runMotorDistance(0.50, 350,350,350,350);
+                previous = state;
+                state = -2;
                 break;
-
-            //Stop motor
+            case 23:
+                state = 7;
+                break;
+            case 24:
+                state = -1;
+                break;
+//-----------------------------------Stop motor ---------------------------------------
             case -2:
                 if (drivetrain.stopMotor()) {
                     state = previous + 1;
