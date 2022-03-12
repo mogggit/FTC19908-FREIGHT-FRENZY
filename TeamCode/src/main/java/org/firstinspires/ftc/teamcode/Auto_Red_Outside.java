@@ -154,7 +154,7 @@ public class Auto_Red_Outside extends LinearOpMode {
                 state = -2;
                 break;
             case 5:
-                drivetrain.runMotorDistance(0.5, 0,-1000,1000,0);
+                drivetrain.runMotorDistance(0.5, 0,-1030,1030,0);
                 spinner.setPower(0.5);
                 timer = getRuntime();
                 previous = state;
@@ -168,20 +168,6 @@ public class Auto_Red_Outside extends LinearOpMode {
                 }
                 break;
             case 7:
-                if (position == 1) {
-                    pivotPos = 350;
-                    state = 8;
-                }
-                else if (position == 2) {
-                    pivotPos = 85;
-                    // TODO: Change state
-                    state = -1;
-                }
-                else {
-                    pivotPos = -60;
-                    // TODO: Change state
-                    state = -1;
-                }
                 drivetrain.runMotorDistance(0.5, 0,2400,-2400,0);
                 slide.extend(-0.9, -4200);
                 previous = state;
@@ -193,6 +179,20 @@ public class Auto_Red_Outside extends LinearOpMode {
                 }
                 break;
             case 9:
+                if (position == 1) {
+                    pivotPos = 350;
+                    state = 10;
+                }
+                else if (position == 2) {
+                    pivotPos = 85;
+                    // TODO: Change state
+                    state = -2;
+                }
+                else {
+                    pivotPos = -60;
+                    // TODO: Change state
+                    state = -2;
+                }
                 drivetrain.runMotorDistance(0.5, -1230,-1230,-1230,-1230);
                 previous = state;
                 state = -2;
