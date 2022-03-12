@@ -13,12 +13,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import java.util.List;
 
-@Autonomous(name = "Auto Red Inside")
-public class Auto_Red_Inside extends LinearOpMode {
+@Autonomous(name = "Auto Red Outside")
+public class Auto_Red_Outside extends LinearOpMode {
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     private static final String[] LABELS = {"Ball", "Cube", "Duck", "Marker"};
@@ -146,153 +144,97 @@ public class Auto_Red_Inside extends LinearOpMode {
                 }
                 break;
             case 3:
-                drivetrain.runMotorDistance(0.5, -450,-1200,1200,450);
-                slide.extend(-0.5, -4200);
-                if (position == 1) {
-                    pivotPos = 350;
-                    state = 4;
-                }
-                else if (position == 2) {
-                    pivotPos = 85;
-                    state = 15;
-                }
-                else {
-                    state = 22;
-                }
-                previous = state - 1;
+                drivetrain.runMotorDistance(0.5, 0,-1000,1000,0);
+                previous = state;
                 state = -2;
                 break;
-//-----------------------------------Start of layer 1----------------------------------
             case 4:
-                drivetrain.runMotorDistance(0.5, 400,400,400,400);
+                drivetrain.runMotorDistance(0.5, 800,800,800,800);
                 previous = state;
                 state = -2;
                 break;
             case 5:
+                drivetrain.runMotorDistance(0.5, 0,-1000,1000,0);
+                spinner.setPower(0.5);
+                timer = getRuntime();
+                previous = state;
+                state = -2;
+                break;
+            case 6:
+                if (getRuntime() >= timer + 5) {
+                    spinner.setPower(0);
+                    previous = state;
+                    state = -2;
+                }
+                break;
+            case 7:
+                if (position == 1) {
+                    pivotPos = 350;
+                    state = 8;
+                }
+                else if (position == 2) {
+                    pivotPos = 85;
+                    // TODO: Change state
+                    state = -1;
+                }
+                else {
+                    pivotPos = -60;
+                    // TODO: Change state
+                    state = -1;
+                }
+                drivetrain.runMotorDistance(0.5, 0,2400,-2400,0);
+                slide.extend(-0.9, -4200);
+                previous = state;
+                state = -2;
+                break;
+            case 8:
                 if (slide.stopSlide()) {
                     state++;
                 }
                 break;
-            case 6:
-                drivetrain.runMotorDistance(0.5, -360,-360,360,360);
+            case 9:
+                drivetrain.runMotorDistance(0.5, -1230,-1230,-1230,-1230);
+                previous = state;
+                state = -2;
+                break;
+//-----------------------------------Start of layer 1--------------------------------------
+            case 10:
+                drivetrain.runMotorDistance(0.5, -100,-100,100,100);
                 previous = state;
                 state = -2;
                 break;
 //-----------------------------------Per-load box release----------------------------------
-            case 7:
+            case 11:
                 grab.setPosition(1);
                 timer = getRuntime();
                 state++;
                 break;
-            case 8:
+            case 12:
                 if (getRuntime() >= timer + 0.5) {
                     state++;
                 }
                 break;
-            case 9:
+            case 13:
                 grab.setPosition(0.42);
                 timer = getRuntime();
                 state++;
                 break;
-            case 10:
+            case 14:
                 if (getRuntime() >= timer + 1) {
                     if (position == 1) {
-                        state = 11;
+                        state = 15;
                     }
                     else if (position == 2) {
-                        state = 18;
+                        // TODO: Change state
+                        state = -1;
                     }
                     else {
-                        state = 25;
-                        pivotPos = -30;
+                        // TODO: Change state
+                        state = -1;
                     }
                 }
                 break;
-//-----------------------------------------------------------------------------------------
-            case 11:
-                drivetrain.runMotorDistance(0.5, 300,300,-300,-300);
-                previous = state;
-                state = -2;
-                break;
-            case 12:
-                drivetrain.runMotorDistance(0.5, -1440,-1440,-1440,-1440);
-                previous = state;
-                state = -2;
-                break;
-            case 13:
-                drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
-                pivotPos = 0;
-                previous = state;
-                state = -2;
-                break;
-            case 14:
-                state = -1;
-                break;
-//-----------------------------------Start of layer 2----------------------------------
-            case 15:
-                drivetrain.runMotorDistance(0.51, 400,400,400,400);
-                previous = state;
-                state = -2;
-                break;
-            case 16:
-                drivetrain.runMotorDistance(0.50, -100,-100,100,100);
-                previous = state;
-                state = -2;
-                break;
-            case 17:
-                pivotPos = 80;
-                state = 7;
-                break;
-            case 18:
-                pivotPos = 100;
-                drivetrain.runMotorDistance(0.50, 200,200,-200,-200);
-                previous = state;
-                state = -2;
-                break;
-            case 19:
-                drivetrain.runMotorDistance(0.5, -1450,-1450,-1450,-1450);
-                pivotPos = 0;
-                previous = state;
-                state = -2;
-                break;
-            case 20:
-                drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
-                previous = state;
-                state = -2;
-                break;
-            case 21:
-                state = -1;
-                break;
-//-----------------------------------Start of layer 3----------------------------------
-            case 22:
-                pivotPos = -70;
-                drivetrain.runMotorDistance(0.50, 330,330,330,330);
-                previous = state;
-                state = -2;
-                break;
-            case 23:
-                drivetrain.runMotorDistance(0.5, -0,-0,0,0);
-                previous = state;
-                state = -2;
-                break;
-            case 24:
-                state = 7;
-                break;
-            case 25:
-                pivotPos = -40;
-                drivetrain.runMotorDistance(0.50, -1400,-1400,-1400,-1400);
-                previous = state;
-                state = -2;
-                break;
-            case 26:
-                pivotPos = 0;
-                drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
-                previous = state;
-                state = -2;
-                break;
-            case 27:
-                state = -1;
-                break;
+
 //-----------------------------------Stop motor ---------------------------------------
             case -2:
                 if (drivetrain.stopMotor()) {
