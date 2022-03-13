@@ -184,7 +184,7 @@ public class Auto_Red_Outside extends LinearOpMode {
                     pivotPos = 350;
                 }
                 else if (position == 2) {
-                    pivotPos = 85;
+                    pivotPos = 75;
                     // TODO: Change state
                 }
                 else {
@@ -197,13 +197,13 @@ public class Auto_Red_Outside extends LinearOpMode {
 //-----------------------------------Move forward--------------------------------------
             case 10:
                 if (position == 1) {
-                    drivetrain.runMotorDistance(0.50,-130,-130,130,130);
+                    drivetrain.runMotorDistance(0.50,-140,-140,140,140);
                     previous = state;
                     state = -2;
                     break;
                 }
                 else if (position == 2) {
-                    drivetrain.runMotorDistance(0.5, -100,-100,100,100);
+                    drivetrain.runMotorDistance(0.5, -110,-110,110,110);
                     previous = state;
                     state = -2;
                     break;
@@ -236,22 +236,26 @@ public class Auto_Red_Outside extends LinearOpMode {
                 }
                 break;
 //-----------------------------------Back & Towards Outside---------------------------------------
-            case 15:
+            case 15: // walk back
                 drivetrain.runMotorDistance(0.50,150,150,-150,-150);
                 previous = state;
                 state = -2;
                 break;
-            case 16:
+            case 16: // turn right
                 drivetrain.runMotorDistance(0.50,-600,-600,-600,-600);
                 previous = state;
                 state = -2;
                 break;
-            case 17:
+            case 17: // move into storage
                 drivetrain.runMotorDistance(1,-3500,-3500,3500,3500);
                 previous = state;
                 state = -2;
                 break;
-            case 18:
+            case 18: // pull slide back
+                slide.extend(-0.9, 0);
+                previous = state;
+                state = -2;
+            case 19:
                 state = -1;
                 break;
 //-----------------------------------Stop motor ---------------------------------------
