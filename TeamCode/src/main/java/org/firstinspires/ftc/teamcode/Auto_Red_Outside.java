@@ -95,19 +95,19 @@ public class Auto_Red_Outside extends LinearOpMode {
      */
     public void mainFSM() {
         switch (state) {
-            case 0:
+            case 0: // turn camera down
                 timer = getRuntime();
                 grab.setPosition(0.1);
                 pivotPos = -40;
                 state++;
                 break;
-            case 1:
-                if (getRuntime() >= timer + 5) {
+            case 1: // wait for object detection
+                if (getRuntime() >= timer + 3) {
                     previous = state;
                     state++;
                 }
                 break;
-            case 2:
+            case 2: // object detection
                 if (tfod != null) {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
@@ -143,12 +143,12 @@ public class Auto_Red_Outside extends LinearOpMode {
                     }
                 }
                 break;
-            case 3:
+            case 3: // turn left
                 drivetrain.runMotorDistance(0.5, 0,-1000,1000,0);
                 previous = state;
                 state = -2;
                 break;
-            case 4:
+            case 4: // turn ?
                 drivetrain.runMotorDistance(0.5, 800,800,800,800);
                 previous = state;
                 state = -2;
@@ -160,15 +160,15 @@ public class Auto_Red_Outside extends LinearOpMode {
                 previous = state;
                 state = -2;
                 break;
-            case 6:
+            case 6: // spinner runs for 5 seconds
                 if (getRuntime() >= timer + 5) {
                     spinner.setPower(0);
                     previous = state;
                     state = -2;
                 }
                 break;
-            case 7:
-                drivetrain.runMotorDistance(0.5, 0,2400,-2400,0);
+            case 7: // move right and extend slide
+                drivetrain.runMotorDistance(0.8, 0,2400,-2400,0);
                 slide.extend(-0.9, -4200);
                 previous = state;
                 state = -2;
@@ -178,32 +178,43 @@ public class Auto_Red_Outside extends LinearOpMode {
                     state++;
                 }
                 break;
+//-----------------------------------Choose Pivot Position & Turn--------------------------------------
             case 9:
                 if (position == 1) {
                     pivotPos = 350;
-                    state = 10;
                 }
                 else if (position == 2) {
                     pivotPos = 85;
                     // TODO: Change state
-                    state = -2;
                 }
                 else {
-                    pivotPos = -65;
-                    // TODO: Change state
-                    state = 14;
+                    pivotPos = -73;
                 }
                 drivetrain.runMotorDistance(0.5, -1210,-1210,-1210,-1210);
                 previous = state;
                 state = -2;
                 break;
-//-----------------------------------Start of layer 1--------------------------------------
+//-----------------------------------Move forward--------------------------------------
             case 10:
-                drivetrain.runMotorDistance(0.5, -100,-100,100,100);
-                previous = state;
-                state = -2;
-                break;
-//-----------------------------------Per-load box release----------------------------------
+                if (position == 1) {
+                    drivetrain.runMotorDistance(0.50,-130,-130,130,130);
+                    previous = state;
+                    state = -2;
+                    break;
+                }
+                else if (position == 2) {
+                    drivetrain.runMotorDistance(0.5, -100,-100,100,100);
+                    previous = state;
+                    state = -2;
+                    break;
+                }
+                else {
+                    drivetrain.runMotorDistance(0.5, -50,-50,50,50);
+                    previous = state;
+                    state = -2;
+                    break;
+                }
+//-----------------------------------Pre-load box release----------------------------------
             case 11:
                 grab.setPosition(1);
                 timer = getRuntime();
@@ -221,44 +232,26 @@ public class Auto_Red_Outside extends LinearOpMode {
                 break;
             case 14:
                 if (getRuntime() >= timer + 1) {
-                    if (position == 1) {
-                        state = 15;
-                    }
-                    else if (position == 2) {
-                        // TODO: Change state
-                        state = -1;
-                    }
-                    else {
-                        // TODO: Change state
-                        state = 17;
-                    }
+                    state++;
                 }
                 break;
-//-----------------------------------Start of layer 3---------------------------------------
+//-----------------------------------Back & Towards Outside---------------------------------------
             case 15:
-                drivetrain.runMotorDistance(0.50,-130,-130,130,130);
-                previous = state;
-                state = -2;
-                break;
-            case 16:
-                state = 11;
-                break;
-            case 17:
                 drivetrain.runMotorDistance(0.50,150,150,-150,-150);
                 previous = state;
                 state = -2;
                 break;
-            case 18:
+            case 16:
                 drivetrain.runMotorDistance(0.50,-600,-600,-600,-600);
                 previous = state;
                 state = -2;
                 break;
-            case 19:
+            case 17:
                 drivetrain.runMotorDistance(1,-3500,-3500,3500,3500);
                 previous = state;
                 state = -2;
                 break;
-            case 20:
+            case 18:
                 state = -1;
                 break;
 //-----------------------------------Stop motor ---------------------------------------
