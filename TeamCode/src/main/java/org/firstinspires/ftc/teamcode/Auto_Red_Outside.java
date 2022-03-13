@@ -154,7 +154,7 @@ public class Auto_Red_Outside extends LinearOpMode {
                 state = -2;
                 break;
             case 5:
-                drivetrain.runMotorDistance(0.5, 0,-1030,1030,0);
+                drivetrain.runMotorDistance(0.4, 0,-1030,1030,0);
                 spinner.setPower(0.5);
                 timer = getRuntime();
                 previous = state;
@@ -189,11 +189,11 @@ public class Auto_Red_Outside extends LinearOpMode {
                     state = -2;
                 }
                 else {
-                    pivotPos = -60;
+                    pivotPos = -65;
                     // TODO: Change state
-                    state = -2;
+                    state = 14;
                 }
-                drivetrain.runMotorDistance(0.5, -1230,-1230,-1230,-1230);
+                drivetrain.runMotorDistance(0.5, -1210,-1210,-1210,-1210);
                 previous = state;
                 state = -2;
                 break;
@@ -230,11 +230,37 @@ public class Auto_Red_Outside extends LinearOpMode {
                     }
                     else {
                         // TODO: Change state
-                        state = -1;
+                        state = 17;
                     }
                 }
                 break;
-
+//-----------------------------------Start of layer 3---------------------------------------
+            case 15:
+                drivetrain.runMotorDistance(0.50,-130,-130,130,130);
+                previous = state;
+                state = -2;
+                break;
+            case 16:
+                state = 11;
+                break;
+            case 17:
+                drivetrain.runMotorDistance(0.50,150,150,-150,-150);
+                previous = state;
+                state = -2;
+                break;
+            case 18:
+                drivetrain.runMotorDistance(0.50,-600,-600,-600,-600);
+                previous = state;
+                state = -2;
+                break;
+            case 19:
+                drivetrain.runMotorDistance(1,-3500,-3500,3500,3500);
+                previous = state;
+                state = -2;
+                break;
+            case 20:
+                state = -1;
+                break;
 //-----------------------------------Stop motor ---------------------------------------
             case -2:
                 if (drivetrain.stopMotor()) {
