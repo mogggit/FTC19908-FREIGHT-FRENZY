@@ -174,11 +174,11 @@ public class Auto_Red_Inside extends LinearOpMode {
                 }
                 break;
             case 6:
-                drivetrain.runMotorDistance(0.5, -360,-360,360,360);
+                drivetrain.runMotorDistance(0.5, -380,-380,380,380);
                 previous = state;
                 state = -2;
                 break;
-//-----------------------------------Per-load box release----------------------------------
+//-----------------------------------Per-load box release--------------------------------
             case 7:
                 grab.setPosition(1);
                 timer = getRuntime();
@@ -200,17 +200,17 @@ public class Auto_Red_Inside extends LinearOpMode {
                         state = 11;
                     }
                     else if (position == 2) {
-                        state = 18;
+                        state = 19;
                     }
                     else {
-                        state = 25;
+                        state = 27;
                         pivotPos = -30;
                     }
                 }
                 break;
 //-----------------------------------------------------------------------------------------
             case 11:
-                drivetrain.runMotorDistance(0.5, 300,300,-300,-300);
+                drivetrain.runMotorDistance(0.5, 350,350,-350,-350);
                 previous = state;
                 state = -2;
                 break;
