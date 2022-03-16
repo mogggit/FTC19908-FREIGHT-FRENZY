@@ -180,7 +180,7 @@ public class Auto_Red_Outside extends LinearOpMode {
                 break;
 //-----------------------------------Choose Pivot Position & Turn--------------------------------------
             case 9:
-                if (position == 1) {
+                if (position == 3) {
                     pivotPos = 350;
                 }
                 else if (position == 2) {
@@ -196,8 +196,8 @@ public class Auto_Red_Outside extends LinearOpMode {
                 break;
 //-----------------------------------Move forward--------------------------------------
             case 10:
-                if (position == 1) {
-                    drivetrain.runMotorDistance(0.50,-140,-140,140,140);
+                if (position == 3) {
+                    drivetrain.runMotorDistance(0.50,-150,-150,150,150);
                     previous = state;
                     state = -2;
                     break;
@@ -209,7 +209,7 @@ public class Auto_Red_Outside extends LinearOpMode {
                     break;
                 }
                 else {
-                    drivetrain.runMotorDistance(0.5, -50,-50,50,50);
+                    drivetrain.runMotorDistance(0.5, -65,-65,65,65);
                     previous = state;
                     state = -2;
                     break;
@@ -246,15 +246,17 @@ public class Auto_Red_Outside extends LinearOpMode {
                 previous = state;
                 state = -2;
                 break;
-            case 17: // move into storage
+            case 17: // move into storage & pull slide back
+                pivotPos = 0;
                 drivetrain.runMotorDistance(1,-3500,-3500,3500,3500);
+                slide.extend(0.6, 0);
                 previous = state;
                 state = -2;
+            case 18:
+                if (slide.stopSlide()) {
+                    state++;
+                }
                 break;
-            case 18: // pull slide back
-                slide.extend(-0.9, 0);
-                previous = state;
-                state = -2;
             case 19:
                 state = -1;
                 break;

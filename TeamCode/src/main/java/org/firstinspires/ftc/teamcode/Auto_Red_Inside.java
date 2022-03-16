@@ -220,77 +220,97 @@ public class Auto_Red_Inside extends LinearOpMode {
                 state = -2;
                 break;
             case 13:
+                pivotPos = 0;
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
+                slide.extend(0.6, 0);
                 pivotPos = 0;
                 previous = state;
                 state = -2;
                 break;
             case 14:
+                if (slide.stopSlide()) {
+                    state++;
+                }
+                break;
+            case 15:
                 state = -1;
                 break;
 //-----------------------------------Start of layer 2----------------------------------
-            case 15:
+            case 16:
                 drivetrain.runMotorDistance(0.51, 400,400,400,400);
                 previous = state;
                 state = -2;
                 break;
-            case 16:
+            case 17:
                 drivetrain.runMotorDistance(0.50, -100,-100,100,100);
                 previous = state;
                 state = -2;
                 break;
-            case 17:
+            case 18:
                 pivotPos = 80;
                 state = 7;
                 break;
-            case 18:
+            case 19:
                 pivotPos = 100;
                 drivetrain.runMotorDistance(0.50, 200,200,-200,-200);
                 previous = state;
                 state = -2;
                 break;
-            case 19:
+            case 20:
                 drivetrain.runMotorDistance(0.5, -1450,-1450,-1450,-1450);
                 pivotPos = 0;
                 previous = state;
                 state = -2;
                 break;
-            case 20:
+            case 21:
+                pivotPos = 0;
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
+                slide.extend(0.6, 0);
                 previous = state;
                 state = -2;
                 break;
-            case 21:
+            case 22:
+                if (slide.stopSlide()) {
+                    state++;
+                }
+                break;
+            case 23:
                 state = -1;
                 break;
 //-----------------------------------Start of layer 3----------------------------------
-            case 22:
+            case 24:
                 pivotPos = -70;
                 drivetrain.runMotorDistance(0.50, 330,330,330,330);
                 previous = state;
                 state = -2;
                 break;
-            case 23:
+            case 25:
                 drivetrain.runMotorDistance(0.5, -0,-0,0,0);
                 previous = state;
                 state = -2;
                 break;
-            case 24:
+            case 26:
                 state = 7;
                 break;
-            case 25:
+            case 27:
                 pivotPos = -40;
                 drivetrain.runMotorDistance(0.50, -1400,-1400,-1400,-1400);
                 previous = state;
                 state = -2;
                 break;
-            case 26:
+            case 28:
                 pivotPos = 0;
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
+                slide.extend(0.6, 0);
                 previous = state;
                 state = -2;
                 break;
-            case 27:
+            case 29:
+                if (slide.stopSlide()) {
+                    state++;
+                }
+                break;
+            case 30:
                 state = -1;
                 break;
 //-----------------------------------Stop motor ---------------------------------------
