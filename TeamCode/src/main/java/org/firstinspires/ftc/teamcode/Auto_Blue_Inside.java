@@ -123,7 +123,7 @@ public class Auto_Blue_Inside extends LinearOpMode {
 
                             if (recognition.getLabel() == "Duck") {
                                 double pos = (recognition.getLeft() + recognition.getRight()) / 2;
-                                if (pos >= 165 && pos <= 466) {
+                                if (pos >= 165 && pos <= 434) {
                                     position = 2; // middle
                                 }
                                 else if (pos < 165) {
@@ -151,11 +151,11 @@ public class Auto_Blue_Inside extends LinearOpMode {
                     state = 4;
                 }
                 else if (position == 2) {
-                    pivotPos = 85;
-                    state = 15;
+                    pivotPos = 75;
+                    state = 16  ;
                 }
                 else {
-                    state = 22;
+                    state = 24;
                 }
                 previous = state - 1;
                 state = -2;
@@ -198,11 +198,11 @@ public class Auto_Blue_Inside extends LinearOpMode {
                         state = 11;
                     }
                     else if (position == 2) {
-                        state = 18;
+                        state = 19;
                     }
                     else {
-                        state = 25;
-                        pivotPos = -30;
+                        state = 27;
+                        pivotPos = -40;
                     }
                 }
                 break;
@@ -275,7 +275,7 @@ public class Auto_Blue_Inside extends LinearOpMode {
                 break;
 //-----------------------------------Start of layer 3----------------------------------
             case 24:
-                pivotPos = -70;
+                pivotPos = -75;
                 drivetrain.runMotorDistance(0.50, -330,-330,-330,-330);
                 previous = state;
                 state = -2;
@@ -290,23 +290,28 @@ public class Auto_Blue_Inside extends LinearOpMode {
                 break;
             case 27:
                 pivotPos = -40;
-                drivetrain.runMotorDistance(0.50, 1400,1400,1400,1400);
+                drivetrain.runMotorDistance(0.50, 200,200,-200,-200);
                 previous = state;
                 state = -2;
                 break;
             case 28:
+                drivetrain.runMotorDistance(0.50, 1400,1400,1400,1400);
+                previous = state;
+                state = -2;
+                break;
+            case 29:
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
                 pivotPos = 0;
                 slide.extend(0.50, 0);
                 previous = state;
                 state = -2;
                 break;
-            case 29:
+            case 30:
                 if (slide.stopSlide()) {
                     state++;
                 }
                 break;
-            case 30:
+            case 31:
                 state = -1;
                 break;
 //-----------------------------------Stop motor ---------------------------------------

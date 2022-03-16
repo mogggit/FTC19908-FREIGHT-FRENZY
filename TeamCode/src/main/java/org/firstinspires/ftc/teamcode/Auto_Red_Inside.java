@@ -125,7 +125,7 @@ public class Auto_Red_Inside extends LinearOpMode {
 
                             if (recognition.getLabel() == "Duck") {
                                 double pos = (recognition.getLeft() + recognition.getRight()) / 2;
-                                if (pos >= 165 && pos <= 466) {
+                                if (pos >= 165 && pos <= 434) {
                                     position = 2; // middle
                                 }
                                 else if (pos < 165) {
@@ -154,10 +154,10 @@ public class Auto_Red_Inside extends LinearOpMode {
                 }
                 else if (position == 2) {
                     pivotPos = 85;
-                    state = 15;
+                    state = 16;
                 }
                 else {
-                    state = 22;
+                    state = 24;
                 }
                 previous = state - 1;
                 state = -2;
