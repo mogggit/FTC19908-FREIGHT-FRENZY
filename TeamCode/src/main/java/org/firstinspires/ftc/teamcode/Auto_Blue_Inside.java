@@ -219,7 +219,7 @@ public class Auto_Blue_Inside extends LinearOpMode {
                 break;
             case 13:
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
-                slide.extend(0.6, 0);
+                slide.extend(0.5, 0);
                 pivotPos = 0;
                 previous = state;
                 state = -2;
@@ -261,7 +261,7 @@ public class Auto_Blue_Inside extends LinearOpMode {
             case 21:
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
                 pivotPos = 0;
-                slide.extend(0.6, 0);
+                slide.extend(0.5, 0);
                 previous = state;
                 state = -2;
                 break;
@@ -297,7 +297,7 @@ public class Auto_Blue_Inside extends LinearOpMode {
             case 28:
                 drivetrain.runMotorDistance(1, -2300,-2300,2300,2300);
                 pivotPos = 0;
-                slide.extend(0.6, 0);
+                slide.extend(0.50, 0);
                 previous = state;
                 state = -2;
                 break;

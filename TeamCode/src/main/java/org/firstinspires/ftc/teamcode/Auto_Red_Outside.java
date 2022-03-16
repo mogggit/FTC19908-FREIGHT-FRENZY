@@ -185,7 +185,6 @@ public class Auto_Red_Outside extends LinearOpMode {
                 }
                 else if (position == 2) {
                     pivotPos = 75;
-                    // TODO: Change state
                 }
                 else {
                     pivotPos = -73;
@@ -249,7 +248,7 @@ public class Auto_Red_Outside extends LinearOpMode {
             case 17: // move into storage & pull slide back
                 pivotPos = 0;
                 drivetrain.runMotorDistance(1,-3500,-3500,3500,3500);
-                slide.extend(0.6, 0);
+                slide.extend(0.5, 0);
                 previous = state;
                 state = -2;
             case 18:
